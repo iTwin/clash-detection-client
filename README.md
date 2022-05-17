@@ -29,7 +29,7 @@ The __@itwin/clash-detection-client__ package consists of thin wrapper functions
 - [`client.templates.getList(params: ParamsToGetTemplateList): EntityListIterator<RuleTemplate>`](#get-all-clash-detection-suppression-rule-templates)
 - [`client.rules.create(params: ParamsToCreateRule): Promise<SuppressionRule>`](#create-clash-detection-suppression-rule)
 - [`client.rules.update(params: ParamsToUpdateRule): Promise<SuppressionRule>`](#update-clash-detection-suppression-rule)
-- [`client.rules.getMinimalList(params: ParamsToGetSuppressionRuleList): EntityListIterator<MinimalRule>`](#get-all-clash-detection-suppression-rules--minimal)
+- [`client.rules.getMinimalList(params: ParamsToGetSuppressionRuleList): EntityListIterator<MinimalSuppressionRule>`](#get-all-clash-detection-suppression-rules--minimal)
 - [`client.rules.getRepresentationList(params: ParamsToGetSuppressionRuleList): EntityListIterator<RuleDetails>`](#get-all-clash-detection-suppression-rules--detailed)
 - [`client.rules.getSingle(params: ParamsToGetSuppressionRule): Promise<RuleDetails>`](#get-clash-detection-suppression-rule)
 - [`client.tests.create(params: ParamsToCreateTest): Promise<Test>`](#create-clash-detection-test)
@@ -38,7 +38,7 @@ The __@itwin/clash-detection-client__ package consists of thin wrapper functions
 - [`client.tests.getList(params: ParamsToGetTestList): EntityListIterator<TestItem>`](#get-all-clash-detection-tests)
 - [`client.tests.runTest(params: ParamsToRunTest): Promise<Run | undefined>`](#run-clash-detection-test)
 - [`client.runs.getMinimalList(params: ParamsToGetRunList): Promise<MinimalRun[]>`](#get-all-clash-detection-runs--minimal)
-- [`client.runs.getRepresentationList(params: ParamsToGetRunList): Promise<RunDetails[]>`](#get-all-clash-detection-runs---detailed)
+- [`client.runs.getRepresentationList(params: ParamsToGetRunList): Promise<RunDetails[]>`](#get-all-clash-detection-runs--detailed)
 - [`client.runs.getSingle(params: ParamsToGetRun): Promise<RunDetails>`](#get-clash-detection-run)
 - [`client.results.get(params: ParamsToGetResult): Promise<ResponseFromGetResult>`](#get-clash-detection-result)
 - [`client.rules.delete(params: ParamsToDeleteSuppressionRule): Promise<void>`](#delete-clash-detection-suppression-rule)
@@ -136,7 +136,26 @@ async function updateClashDetectionSuppressionRule(accessToken: string, ruleId: 
 }
 ```
 
-### Get all clash detection suppression rules
+### Get all clash detection suppression rules -minimal
+```typescript
+import { ClashDetectionClient, EntityListIterator, MinimalSuppressionRule, ParamsToGetSuppressionRuleList } from "@itwin/clash-detection-client";
+
+/** Function that queries all suppression rules for a particular project and prints their ids to the console. */
+async function printRuleIds(accessToken: string, projectId: string): Promise<void> {
+  const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
+  const params: ParamsToGetSuppressionRuleList = {
+    accessToken,
+    urlParams: {
+      projectId
+    }
+  };
+  const rulesIterator: EntityListIterator<MinimalSuppressionRule> = clashDetectionClient.rules.getMinimalList(params);
+  for await (const rule of rulesIterator)
+    console.log(rule.id);
+}
+```
+
+### Get all clash detection suppression rules -detailed
 ```typescript
 import { ClashDetectionClient, EntityListIterator, ParamsToGetSuppressionRuleList, SuppressionRuleDetails } from "@itwin/clash-detection-client";
 
@@ -330,7 +349,26 @@ async function deleteClashDetectionTest(accessToken: string, testId: string): Pr
 }
 ```
 
-### Get all clash detection runs
+### Get all clash detection runs -minimal
+```typescript
+import { ClashDetectionClient, MinimalRun, ParamsToGetRunList } from "@itwin/clash-detection-client";
+/** Function that queries all runs for a particular project and prints their ids to the console. */
+async function printRunIds(accessToken: string, projectId: string): Promise<void> {
+  const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
+  const params: ParamsToGetRunList = {
+    accessToken,
+    urlParams: {
+      projectId
+    }
+  };
+  const runs: MinimalRun[] = await clashDetectionClient.runs.getMinimalList(params);
+  runs.forEach((run) => {
+    console.log(run.id);
+  });
+}
+```
+
+### Get all clash detection runs -detailed
 ```typescript
 import { ClashDetectionClient, ParamsToGetRunList, RunDetails } from "@itwin/clash-detection-client";
 /** Function that queries all runs for a particular project and prints their ids to the console. */
@@ -397,4 +435,3 @@ async function getClashDetectionResult(accessToken: string, resultId: string): P
   console.log('Results count: ${response.result.length.toString()}');
 }
 ```
-
