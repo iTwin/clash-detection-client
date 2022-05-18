@@ -1,0 +1,67 @@
+{
+  // Use IntelliSense to learn about possible Node.js debug attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch Program",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\lib\\cjs\\clash-detection-client.js",
+      "outFiles": [
+        "${workspaceFolder}/lib/**/*.js"
+      ]
+    },
+    // CLIENT TESTS
+    { /* PARTIAL */
+      "name": "[NODE] Certa Test Runner for Client Tests",
+      "cwd": "${workspaceFolder}",
+      "type": "pwa-node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "test:chrome",
+        "--",
+        "--debug"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/lib/**/*.js"
+      ],
+      "outputCapture": "std",
+      "attachSimplePort": 5858, // NB: This must match ports.debugging in full-stack-tests/core/certa.json
+      "cascadeTerminateToConfigurations": [
+        "[BROWSER] Client Tests"
+      ]
+    },
+    { /* PARTIAL */
+      "name": "[BROWSER] Client Tests",
+      "presentation": {
+        "hidden": true
+      },
+      "type": "pwa-chrome",
+      "request": "attach",
+      "port": 9223, // NB: This must match ports.frontendDebugging in core/frontend/certa.json
+      "timeout": 20000,
+      "outFiles": [
+        "${workspaceFolder}/lib/**/*.js"
+      ],
+      "cascadeTerminateToConfigurations": [
+        "[NODE] Certa Test Runner for Client Tests"
+      ]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Compound",
+      "configurations": [
+        "[NODE] Certa Test Runner for Client Tests",
+        "[BROWSER] Client Tests"
+      ]
+    }
+  ]
+}
