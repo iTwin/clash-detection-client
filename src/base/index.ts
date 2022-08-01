@@ -8,6 +8,7 @@ export * from "./interfaces/CommonInterfaces";
 export * from "./interfaces/UtilityTypes";
 export * from "./interfaces/ClashDetectionErrorInterfaces";
 export * from "./interfaces/apiEntities/ResultInterfaces";
+export * from "./interfaces/apiEntities/IModelInterfaces";
 export * from "./interfaces/apiEntities/SuppressionRuleInterfaces";
 export * from "./interfaces/apiEntities/RunInterfaces";
 export * from "./interfaces/apiEntities/TemplateInterfaces";
