@@ -421,7 +421,7 @@ async function deleteClashDetectionRun(accessToken: string, runId: string): Prom
 
 ### Get clash detection result
 ```typescript
-import { ClashDetectionClient, GetResultResponse, ParamsToGetResult } from "@itwin/clash-detection-client";
+import { ClashDetectionClient, ParamsToGetResult, ResponseFromGetResult } from "@itwin/clash-detection-client";
 
 /** Function that gets a clash detection result and prints the count of clashes. */
 async function getClashDetectionResult(accessToken: string, resultId: string): Promise<void> {
@@ -430,7 +430,7 @@ async function getClashDetectionResult(accessToken: string, resultId: string): P
     accessToken,
     resultId
   };
-  const response: GetResultResponse = await clashDetectionClient.results.get(params);
+  const response: ResponseFromGetResult  = await clashDetectionClient.results.get(params);
 
   console.log('Results count: ${response.result.length.toString()}');
 }
