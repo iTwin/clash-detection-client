@@ -48,7 +48,7 @@
     "@types/mocha": "^9.1.1",
     "@types/node": "14.14.31",
     "chai": "^4.3.6",
-    "cpx": "^1.5.0",
+    "cpx2": "^3.0.0",
     "dotenv": "^10.0.0",
     "dotenv-expand": "^5.1.0",
     "eslint": "^7.32.0",
@@ -70,14 +70,6 @@
     "rules": {
       "no-duplicate-imports": "off",
       "@typescript-eslint/consistent-type-imports": "error"
-    }
-  },
-  "pnpm": {
-    "overrides": {
-      "glob-parent@<5.1.2": ">=5.1.2",
-      "validator@<13.7.0": ">=13.7.0",
-      "braces@<2.3.1": ">=2.3.1",
-      "nanoid@>=3.0.0 <3.1.31": ">=3.1.31"
     }
   }
 }
