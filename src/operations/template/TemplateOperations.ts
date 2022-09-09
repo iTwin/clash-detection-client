@@ -35,6 +35,7 @@ export class TemplateOperations<TOptions extends OperationOptions> extends Opera
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getTemplateListUrl({ urlParams: params.urlParams }),
       entityCollectionAccessor,
+      userMetadata: false,
     }));
   }
 }

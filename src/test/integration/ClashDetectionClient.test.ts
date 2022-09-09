@@ -95,6 +95,7 @@ describe("ClashDetectionClient", async () => {
         projectId,
         $top: 5,
       },
+      userMetadata: true,
     };
     const rulesIterator: EntityListIterator<SuppressionRuleDetails> = clashDetectionClient.rules.getRepresentationList(params);
     const rules: SuppressionRuleDetails[] = await take(rulesIterator, 1);
@@ -106,6 +107,7 @@ describe("ClashDetectionClient", async () => {
   it("should get a suppression rule by id", async () => {
     const params: ParamsToGetSuppressionRule = {
       ruleId: clashDetectionClient.ruleId,
+      userMetadata: true,
     };
     const rule: SuppressionRuleDetails = await clashDetectionClient.rules.getSingle(params);
 
@@ -123,6 +125,7 @@ describe("ClashDetectionClient", async () => {
         modelIds: [ "0x21","0x66","0x68","0x6a" ],
         categoryIds: [],
         query: "SELECT BisCore.Element.ECInstanceId FROM BisCore.Element WHERE BisCore.Element.Model.id=0x6c",
+        queryName: "Test1",
         selfCheck: true,
         clearance: 0.001,
       },
@@ -136,6 +139,11 @@ describe("ClashDetectionClient", async () => {
       touchingTolerance: 0,
       includeSubModels: false,
       suppressionRules,
+      advancedSettings: {
+        longClash: true,
+        calculateOverlap: true,
+        toleranceOverlapValidation: true,
+      },
     };
     const test: Test = await clashDetectionClient.tests.create(params);
 
@@ -156,6 +164,7 @@ describe("ClashDetectionClient", async () => {
         modelIds: [ "0x21","0x66","0x68","0x6a" ],
         categoryIds: [],
         query: "SELECT BisCore.Element.ECInstanceId FROM BisCore.Element WHERE BisCore.Element.Model.id=0x6c",
+        queryName: "Test1",
         selfCheck: true,
         clearance: 0.001,
       },
@@ -169,6 +178,11 @@ describe("ClashDetectionClient", async () => {
       touchingTolerance: 0,
       includeSubModels: false,
       suppressionRules,
+      advancedSettings: {
+        longClash: true,
+        calculateOverlap: true,
+        toleranceOverlapValidation: true,
+      },
     };
     const test: Test = await clashDetectionClient.tests.update(params);
 
@@ -179,6 +193,7 @@ describe("ClashDetectionClient", async () => {
   it("should get a test by id", async () => {
     const params: ParamsToGetTest = {
       testId: clashDetectionClient.testId,
+      userMetadata: true,
     };
     const test: TestDetails = await clashDetectionClient.tests.getSingle(params);
 
@@ -192,6 +207,7 @@ describe("ClashDetectionClient", async () => {
         projectId,
         $top: 5,
       },
+      userMetadata: true,
     };
     const testsIterator: EntityListIterator<TestItem> = clashDetectionClient.tests.getList(params);
     const tests: TestItem[] = await take(testsIterator, 1);
@@ -204,6 +220,7 @@ describe("ClashDetectionClient", async () => {
     const params: ParamsToRunTest = {
       testId: clashDetectionClient.testId,
       iModelId,
+      testSettings: {resultsLimit: "1000"},
     };
     const run: Run | undefined = await clashDetectionClient.tests.runTest(params);
 

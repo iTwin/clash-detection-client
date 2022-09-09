@@ -13,7 +13,7 @@ export class Constants {
     authorization: "Authorization",
     contentType: "ContentType",
     prefer: "Prefer",
-
+    userMetadata: "Include-User-Metadata",
     values: {
       contentType: "application/json",
     },

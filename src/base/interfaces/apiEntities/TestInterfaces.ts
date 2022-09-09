@@ -2,7 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import type { CollectionResponse, Link } from "../CommonInterfaces";
+import type { AdvancedSettings, AllUserMetadata, CollectionResponse, ElementSetCriteria, Link } from "../CommonInterfaces";
 
 /** Links that belong to Test entity returned from Clash Detection API. */
 export interface TestDetailLinks {
@@ -22,7 +22,7 @@ export interface TestLinks {
 }
 
 /** Test item. */
-export interface TestItem {
+export interface TestBaseItem {
   /** Test id. */
   id: string;
   /** Test display name. */
@@ -33,26 +33,32 @@ export interface TestItem {
   creationDateTime: string;
   /** Test modification date. */
   modificationDateTime: string;
+  /** User metadata. */
+  userMetadata: AllUserMetadata;
+}
+
+/** Test item. */
+export interface TestItem extends TestBaseItem {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: TestLinks;
 }
 
 /** Test details. */
-export interface TestDetails {
-  /** Test display name. */
-  displayName: string;
-  /** Test description. */
-  description: string;
-  /** Test creation date. */
-  creationDateTime: string;
-  /** Test modification date. */
-  modificationDateTime: string;
-  /** Test rule ids. */
-  rules: string[];
-  /** Stop execution on failure flag. */
-  stopExecutionOnFailure: boolean;
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  _links: TestLinks;
+export interface TestDetails extends TestItem {
+  /** Flag to suppress touching. */
+  suppressTouching: boolean;
+  /** Flag to include sub-models. */
+  includeSubModels: boolean;
+  /** The touching tolerance to be applied. */
+  touchingTolerance: number;
+  /** First set of elements to include in clash test. */
+  setA: ElementSetCriteria;
+  /** Second set of elements to include in clash test. */
+  setB: ElementSetCriteria;
+  /** The ids of the suppression rules. */
+  suppressionRules: string[];
+  /** Advanced settings for clash test. */
+  advancedSettings: AdvancedSettings;
 }
 
 /** Get Test API response. */
@@ -71,17 +77,7 @@ export interface TestSelfLink {
 }
 
 /** Test details. */
-export interface Test {
-  /** Test id. */
-  id: string;
-  /** Test display name. */
-  displayName: string;
-  /** Test description. */
-  description: string;
-  /** Test rule ids. */
-  rules: string[];
-  /** Stop execution on failure flag. */
-  stopExecutionOnFailure: boolean;
+export interface Test extends TestBaseItem {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: TestSelfLink;
 }

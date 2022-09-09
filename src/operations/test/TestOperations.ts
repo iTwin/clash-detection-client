@@ -38,6 +38,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getTestListUrl({ urlParams: params.urlParams }),
       entityCollectionAccessor,
+      userMetadata: params.userMetadata ?? false,
     }));
   }
 
@@ -49,10 +50,11 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    * @returns {Promise<TestDetails>} a Test with specified id. See {@link TestDetails}.
    */
   public async getSingle(params: ParamsToGetTest): Promise<TestDetails> {
-    const { accessToken, testId } = params;
+    const { accessToken, testId, userMetadata } = params;
     const response = await this.sendGetRequest<ResponseFromGetTest>({
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleTestUrl({ testId }),
+      userMetadata: userMetadata ?? false,
     });
     return response.test;
   }
@@ -74,6 +76,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       touchingTolerance: params.touchingTolerance,
       includeSubModels: params.includeSubModels,
       suppressionRules: params.suppressionRules,
+      advancedSettings: params.advancedSettings,
     };
     const response = await this.sendPostRequest<ResponseFromCreateTest>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
@@ -100,6 +103,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       touchingTolerance: params.touchingTolerance,
       includeSubModels: params.includeSubModels,
       suppressionRules: params.suppressionRules,
+      advancedSettings: params.advancedSettings,
     };
     const response = await this.sendPutRequest<ResponseFromUpdateTest>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
@@ -150,6 +154,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       testId: params.testId,
       iModelId: params.iModelId,
       namedVersionId: params.namedVersionId,
+      testSettings: params.testSettings,
     };
     const response = await this.sendPostRequest<ResponseFromRunTest>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),

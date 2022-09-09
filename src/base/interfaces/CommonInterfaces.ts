@@ -64,6 +64,16 @@ export enum PreferReturn {
   Representation = "representation"
 }
 
+export interface AllUserMetadata {
+  createdBy: UserMetadata;
+  modifiedBy: UserMetadata;
+}
+
+export interface UserMetadata {
+  email: string;
+  name: string;
+}
+
 /** Suppression Rule function parameters - vary depending on the selected suppression rule template */
 export interface SuppressionRuleParameters {
   /** Property key. */
@@ -133,4 +143,24 @@ export interface PropertyKey {
   relationshipPath: string;
   /** Property name. */
   propertyName: string;
+}
+
+/** Element set criteria. */
+export interface ElementSetCriteria {
+  modelIds: string[];
+  categoryIds: string[];
+  query?: string;
+  queryName?: string;
+  selfCheck: boolean;
+  clearance: number;
+}
+
+export interface AdvancedSettings {
+  /** Flag to enable long clash job processing (no processing time limit enforced - just result limit). */
+  longClash: boolean;
+  /** Flag to calculate and report clash overlaps (minimum orthogonal overlap distance). */
+  calculateOverlap: boolean;
+  /** Flag to enable tolerance overlap validation. If 'suppressTouching' and 'calculateOverlap' are set, */
+  /** clashes are suppressed for overlaps less than touching tolerance. */
+  toleranceOverlapValidation: boolean;
 }

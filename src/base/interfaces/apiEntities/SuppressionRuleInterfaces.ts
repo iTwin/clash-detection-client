@@ -2,7 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import type { CollectionResponse, Link, SuppressionRuleParameters } from "../CommonInterfaces";
+import type { AllUserMetadata, CollectionResponse, Link, SuppressionRuleParameters } from "../CommonInterfaces";
 
 /** Links that belong to Suppression Rule entity returned from Clash Detection API. */
 export interface SuppressionRuleDetailLink {
@@ -48,6 +48,8 @@ export interface SuppressionRuleDetails {
   templateId: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: SuppressionRuleUserInfoLinks;
+  /** User metadata. */
+  userMetadata: AllUserMetadata;
 }
 
 /** Get Suppression Rule API response. */

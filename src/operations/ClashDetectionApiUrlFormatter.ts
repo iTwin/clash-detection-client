@@ -16,27 +16,27 @@ export class ClashDetectionApiUrlFormatter {
   }
 
   public getSingleRuleUrl(params: { ruleId: string } ): string {
-    return `${this.baseUrl}/rules/${params.ruleId}`;
+    return `${this.baseUrl}/suppressionRules/${params.ruleId}`;
   }
 
   public getRuleListUrl(params: { urlParams?: ParamsToGetSuppressionRuleListUrl }): string {
-    return `${this.baseUrl}/rules${this.formQueryString({ ...params.urlParams })}`;
+    return `${this.baseUrl}/suppressionRules${this.formQueryString({ ...params.urlParams })}`;
   }
 
   public createRuleUrl(): string {
-    return `${this.baseUrl}/rules`;
+    return `${this.baseUrl}/suppressionRules`;
   }
 
   public updateRuleUrl(params: { ruleId: string }): string {
-    return `${this.baseUrl}/rules/${params.ruleId}`;
+    return `${this.baseUrl}/suppressionRules/${params.ruleId}`;
   }
 
   public deleteRuleUrl(params: { ruleId: string }): string {
-    return `${this.baseUrl}/rules/${params.ruleId}`;
+    return `${this.baseUrl}/suppressionRules/${params.ruleId}`;
   }
 
   public getTemplateListUrl(params: { urlParams?: ParamsToGetTemplateListUrl }): string {
-    return `${this.baseUrl}/ruleTemplates${this.formQueryString({ ...params.urlParams })}`;
+    return `${this.baseUrl}/suppressionRuleTemplates${this.formQueryString({ ...params.urlParams })}`;
   }
 
   public getSingleTestUrl(params: { testId: string } ): string {

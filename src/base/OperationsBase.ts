@@ -7,7 +7,7 @@ import type { AccessTokenCallback, AuthorizationParam, CollectionResponse, Prefe
 import type { Dictionary, EntityCollectionPage } from "./interfaces/UtilityTypes";
 import type { RestClient } from "./rest/RestClient";
 
-type SendGetRequestParams = AuthorizationParam & { url: string, preferReturn?: PreferReturn };
+type SendGetRequestParams = AuthorizationParam & { url: string, preferReturn?: PreferReturn, userMetadata?: boolean };
 type SendPostRequestParams = AuthorizationParam & { url: string, body: unknown };
 type SendPutRequestParams = AuthorizationParam & { url: string, body: unknown };
 type SendPatchRequestParams = SendPostRequestParams;
@@ -65,6 +65,7 @@ export class OperationsBase<TOptions extends OperationsBaseOptions> {
     url: string;
     preferReturn?: PreferReturn;
     entityCollectionAccessor: (response: unknown) => TEntity[];
+    userMetadata: boolean;
   }): Promise<EntityCollectionPage<TEntity>> {
     const response = await this.sendGetRequest<CollectionResponse>(params);
     return {
@@ -75,7 +76,7 @@ export class OperationsBase<TOptions extends OperationsBaseOptions> {
     };
   }
 
-  private async formHeaders(params: AuthorizationParam & { preferReturn?: PreferReturn, containsBody?: boolean }): Promise<Dictionary<string>> {
+  private async formHeaders(params: AuthorizationParam & { preferReturn?: PreferReturn, containsBody?: boolean, userMetadata?: boolean }): Promise<Dictionary<string>> {
     const headers: Dictionary<string> = {};
     if (params.accessToken)
       headers[Constants.headers.authorization] = params.accessToken;
@@ -89,6 +90,9 @@ export class OperationsBase<TOptions extends OperationsBaseOptions> {
 
     if (params.containsBody)
       headers[Constants.headers.contentType] = Constants.headers.values.contentType;
+
+    if (params.userMetadata)
+      headers[Constants.headers.userMetadata] = "true";
 
     return headers;
   }

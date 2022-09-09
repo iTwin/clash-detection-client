@@ -37,6 +37,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
       preferReturn: PreferReturn.Minimal,
       entityCollectionAccessor,
+      userMetadata: false,
     }));
   }
 
@@ -60,6 +61,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
       entityCollectionAccessor,
+      userMetadata: params.userMetadata ?? false,
     }));
   }
 
@@ -71,10 +73,11 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
    * @returns {Promise<SuppressionRuleDetails>} a Suppression Rule with specified id. See {@link SuppressionRuleDetails}.
    */
   public async getSingle(params: ParamsToGetSuppressionRule): Promise<SuppressionRuleDetails> {
-    const { accessToken, ruleId } = params;
+    const { accessToken, ruleId, userMetadata } = params;
     const response = await this.sendGetRequest<ResponseFromGetSuppressionRule>({
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleRuleUrl({ ruleId }),
+      userMetadata: userMetadata ?? false,
     });
     return response.suppressionRule;
   }
