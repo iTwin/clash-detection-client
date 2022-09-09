@@ -10,8 +10,6 @@ export interface TestDetailLinks {
   createdBy: Link;
   /** Link to get user info of last modifier. */
   lastModifiedBy: Link;
-  /** Link to get Test details. */
-  test: Link;
 }
 
 export interface TestLinks {
@@ -19,10 +17,12 @@ export interface TestLinks {
   createdBy: Link;
   /** Link to get user info of last modifier. */
   lastModifiedBy: Link;
+  /** Link to get Test details. */
+  test: Link;
 }
 
 /** Test item. */
-export interface TestBaseItem {
+export interface TestItem {
   /** Test id. */
   id: string;
   /** Test display name. */
@@ -35,16 +35,22 @@ export interface TestBaseItem {
   modificationDateTime: string;
   /** User metadata. */
   userMetadata: AllUserMetadata;
-}
-
-/** Test item. */
-export interface TestItem extends TestBaseItem {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: TestLinks;
 }
 
 /** Test details. */
-export interface TestDetails extends TestItem {
+export interface TestDetails {
+  /** Test id. */
+  id: string;
+  /** Test display name. */
+  displayName: string;
+  /** Test description. */
+  description: string;
+  /** Test creation date. */
+  creationDateTime: string;
+  /** Test modification date. */
+  modificationDateTime: string;
   /** Flag to suppress touching. */
   suppressTouching: boolean;
   /** Flag to include sub-models. */
@@ -57,8 +63,12 @@ export interface TestDetails extends TestItem {
   setB: ElementSetCriteria;
   /** The ids of the suppression rules. */
   suppressionRules: string[];
+  /** User metadata. */
+  userMetadata: AllUserMetadata;
   /** Advanced settings for clash test. */
   advancedSettings: AdvancedSettings;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  _links: TestDetailLinks;
 }
 
 /** Get Test API response. */
@@ -77,7 +87,27 @@ export interface TestSelfLink {
 }
 
 /** Test details. */
-export interface Test extends TestBaseItem {
+export interface Test {
+  /** Test id. */
+  id: string;
+  /** Test display name. */
+  displayName: string;
+  /** Test description. */
+  description: string;
+  /** Flag to suppress touching. */
+  suppressTouching: boolean;
+  /** Flag to include sub-models. */
+  includeSubModels: boolean;
+  /** The touching tolerance to be applied. */
+  touchingTolerance: number;
+  /** First set of elements to include in clash test. */
+  setA: ElementSetCriteria;
+  /** Second set of elements to include in clash test. */
+  setB: ElementSetCriteria;
+  /** The ids of the suppression rules. */
+  suppressionRules: string[];
+  /** Advanced settings for clash test. */
+  advancedSettings: AdvancedSettings;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: TestSelfLink;
 }

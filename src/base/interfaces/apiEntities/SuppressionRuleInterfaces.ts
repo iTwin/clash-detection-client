@@ -7,7 +7,7 @@ import type { AllUserMetadata, CollectionResponse, Link, SuppressionRuleParamete
 /** Links that belong to Suppression Rule entity returned from Clash Detection API. */
 export interface SuppressionRuleDetailLink {
   /** Link to get complete suppression rule details. */
-  suppressionRule: Link;
+  rule: Link;
 }
 
 export interface SuppressionRuleUserInfoLinks {
@@ -17,7 +17,7 @@ export interface SuppressionRuleUserInfoLinks {
   lastModifiedBy: Link;
 }
 
-export interface SuppressionRuleSelfLink {
+export interface SuppressionRuleSelfLink extends SuppressionRuleUserInfoLinks {
   /** Link to get created/updated suppression rule. */
   self: Link;
 }
@@ -39,17 +39,19 @@ export interface SuppressionRuleDetails {
   /** Suppression rule display name. */
   displayName: string;
   /** Suppression rule description. */
-  description: string;
+  reason: string;
   /** Suppression rule creation date/time. */
   creationDateTime: string;
   /** Suppression rule modification date/time. */
   modificationDateTime: string;
   /** Suppression rule template id. */
   templateId: string;
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  _links: SuppressionRuleUserInfoLinks;
+  /** Suppression rule parameters. */
+  parameters: SuppressionRuleParameters;
   /** User metadata. */
   userMetadata: AllUserMetadata;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  _links: SuppressionRuleUserInfoLinks;
 }
 
 /** Get Suppression Rule API response. */
@@ -69,14 +71,16 @@ export interface ResponseFromGetSuppressionRuleList extends CollectionResponse {
 
 /** Create Suppression Rule API Response. */
 export interface ResponseFromCreateSuppressionRule {
-  suppressionRule: SuppressionRule;
+  suppressionRule: SuppressionRuleCreate;
 }
 
-/** Create Suppression Rule API Response. */
-export type ResponseFromUpdateSuppressionRule = ResponseFromCreateSuppressionRule;
+/** Update Suppression Rule API Response. */
+export interface ResponseFromUpdateSuppressionRule {
+  suppressionRule: SuppressionRuleUpdate;
+}
 
-/** Create/update Suppression Rule Response object. */
-export interface SuppressionRule {
+/** Create Suppression Rule Response object. */
+export interface SuppressionRuleCreate {
   /** Suppression rule id. */
   id: string;
   /** Suppression rule template id. */
@@ -87,4 +91,14 @@ export interface SuppressionRule {
   reason: string;
   /** Suppression rule parameters. */
   parameters: SuppressionRuleParameters;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  _links: SuppressionRuleSelfLink;
+}
+
+/** Update Suppression Rule Response object. */
+export interface SuppressionRuleUpdate extends SuppressionRuleCreate {
+  /** Suppression rule creation date/time. */
+  creationDateTime: string;
+  /** Suppression rule modification date/time. */
+  modificationDateTime: string;
 }
