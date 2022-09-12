@@ -2,7 +2,6 @@
   "extends": "./node_modules/@itwin/build-tools/tsconfig-base.json",
   "compilerOptions": {
     "moduleResolution": "node",
-    "esModuleInterop": true,
     "sourceMap": true
   },
   "include": [

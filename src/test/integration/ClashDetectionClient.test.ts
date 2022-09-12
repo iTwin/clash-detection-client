@@ -8,7 +8,7 @@ import type { EntityListIterator } from "../../base/iterators/EntityListIterator
 import type { ClashDetectionClientOptions } from "../../ClashDetectionClient";
 import { ClashDetectionClient } from "../../ClashDetectionClient";
 import { TestConfig } from "../TestConfig";
-import type { MinimalRun, MinimalSuppressionRule, ResponseFromGetResult, Run, RunDetails, SuppressionRule, SuppressionRuleDetails, SuppressionRuleTemplate, Test, TestDetails, TestItem } from "../../base";
+import type { MinimalRun, MinimalSuppressionRule, ResponseFromGetResult, Run, RunDetails, SuppressionRuleCreate, SuppressionRuleDetails, SuppressionRuleTemplate, SuppressionRuleUpdate, Test, TestDetails, TestItem } from "../../base";
 import type { ParamsToCreateSuppressionRule, ParamsToCreateTest, ParamsToDeleteRun, ParamsToDeleteSuppressionRule, ParamsToDeleteTest, ParamsToGetResult, ParamsToGetRun, ParamsToGetRunList, ParamsToGetSuppressionRule, ParamsToGetSuppressionRuleList, ParamsToGetTemplateList, ParamsToGetTest, ParamsToGetTestList, ParamsToRunTest, ParamsToUpdateSuppressionRule, ParamsToUpdateTest } from "../../operations";
 
 chai.should();
@@ -54,7 +54,7 @@ describe("ClashDetectionClient", async () => {
         },
       },
     };
-    const rule: SuppressionRule = await clashDetectionClient.rules.create(params);
+    const rule: SuppressionRuleCreate = await clashDetectionClient.rules.create(params);
 
     // Expect suppression rule to be found
     chai.expect(rule).to.not.be.undefined;
@@ -69,7 +69,7 @@ describe("ClashDetectionClient", async () => {
       displayName: "TestSuppressionRule1 - updated",
       reason: "Test suppression rule 1",
     };
-    const rule: SuppressionRule = await clashDetectionClient.rules.update(params);
+    const rule: SuppressionRuleUpdate = await clashDetectionClient.rules.update(params);
 
     // Expect suppression rule to be found
     chai.expect(rule).to.not.be.undefined;

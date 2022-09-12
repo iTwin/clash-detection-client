@@ -5,7 +5,7 @@
 import { OperationsBase } from "../../base/OperationsBase";
 import { PreferReturn } from "../../base/interfaces/CommonInterfaces";
 import { EntityListIteratorImpl } from "../../base/iterators/EntityListIteratorImpl";
-import type { MinimalSuppressionRule, ResponseFromCreateSuppressionRule, ResponseFromGetSuppressionRule, ResponseFromGetSuppressionRuleList, ResponseFromGetSuppressionRuleListMinimal, ResponseFromUpdateSuppressionRule, SuppressionRule, SuppressionRuleDetails } from "../../base/interfaces/apiEntities/SuppressionRuleInterfaces";
+import type { MinimalSuppressionRule, ResponseFromCreateSuppressionRule, ResponseFromGetSuppressionRule, ResponseFromGetSuppressionRuleList, ResponseFromGetSuppressionRuleListMinimal, ResponseFromUpdateSuppressionRule, SuppressionRuleCreate, SuppressionRuleDetails, SuppressionRuleUpdate } from "../../base/interfaces/apiEntities/SuppressionRuleInterfaces";
 import type { EntityListIterator } from "../../base/iterators/EntityListIterator";
 import type { OperationOptions } from "../OperationOptions";
 import type { ParamsToCreateSuppressionRule, ParamsToDeleteSuppressionRule, ParamsToGetSuppressionRule, ParamsToGetSuppressionRuleList, ParamsToUpdateSuppressionRule } from "./SuppressionRuleOperationParams";
@@ -103,7 +103,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
    * @param {ParamsToCreateSuppressionRule} params parameters for this operation. See {@link ParamsToCreateSuppressionRule}.
    * @returns {Promise<SuppressionRule>} newly created Suppression Rule. See {@link SuppressionRule}.
    */
-  public async create(params: ParamsToCreateSuppressionRule): Promise<SuppressionRule> {
+  public async create(params: ParamsToCreateSuppressionRule): Promise<SuppressionRuleCreate> {
     const body = {
       templateId: params.templateId,
       displayName: params.displayName,
@@ -125,7 +125,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
    * @param {ParamsToUpdateSuppressionRule} params parameters for this operation. See {@link ParamsToUpdateSuppressionRule}.
    * @returns {Promise<SuppressionRule>} newly updated Suppression Rule. See {@link SuppressionRule}.
    */
-  public async update(params: ParamsToUpdateSuppressionRule): Promise<SuppressionRule> {
+  public async update(params: ParamsToUpdateSuppressionRule): Promise<SuppressionRuleUpdate> {
     const body = {
       displayName: params.displayName,
       description: params.reason,
