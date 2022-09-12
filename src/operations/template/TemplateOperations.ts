@@ -30,7 +30,9 @@ export class TemplateOperations<TOptions extends OperationOptions> extends Opera
       const templates = (response as ResponseFromGetTemplates).suppressionRuleTemplates;
       return templates;
     };
-
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<SuppressionRuleTemplate>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getTemplateListUrl({ urlParams: params.urlParams }),

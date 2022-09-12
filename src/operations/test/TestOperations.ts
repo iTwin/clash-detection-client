@@ -33,7 +33,9 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       const tests = (response as ResponseFromGetTestList).tests;
       return tests;
     };
-
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<TestItem>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getTestListUrl({ urlParams: params.urlParams }),
@@ -51,6 +53,9 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    */
   public async getSingle(params: ParamsToGetTest): Promise<TestDetails> {
     const { accessToken, testId, userMetadata } = params;
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     const response = await this.sendGetRequest<ResponseFromGetTest>({
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleTestUrl({ testId }),
@@ -78,6 +83,9 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       suppressionRules: params.suppressionRules,
       advancedSettings: params.advancedSettings,
     };
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     const response = await this.sendPostRequest<ResponseFromCreateTest>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.createTestUrl(),
@@ -105,6 +113,9 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       suppressionRules: params.suppressionRules,
       advancedSettings: params.advancedSettings,
     };
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     const response = await this.sendPutRequest<ResponseFromUpdateTest>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.updateTestUrl(params),
@@ -121,17 +132,18 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    * @returns {Promise<Run>} newly started Run. See {@link Run}.
    */
   public async runTest(params: ParamsToRunTest): Promise<Run | undefined> {
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     // If namedVersionId is not specified, then try to get latest version as default
     if (params.namedVersionId === undefined) {
       const iModelsClient: IModelsClient = new IModelsClient();
       let authorization: AuthorizationCallback;
       if (params.accessToken) {
         authorization = ClashDetectionClient.toAuthorizationCallback(params.accessToken);
-      } else if (this._options.accessTokenCallback) {
-        const accessToken = await this._options.accessTokenCallback();
-        authorization = ClashDetectionClient.toAuthorizationCallback(accessToken);
       } else {
-        throw new Error(`Access token is required`);
+        const accessToken = await this._options.accessTokenCallback!();
+        authorization = ClashDetectionClient.toAuthorizationCallback(accessToken);
       }
       const getNamedVersionListParams: GetNamedVersionListParams = {
         authorization,
@@ -174,6 +186,9 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    */
   public async delete(params: ParamsToDeleteTest): Promise<void> {
     const { accessToken, testId } = params;
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     await this.sendDeleteRequest<void>({
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteTestUrl({ testId }),

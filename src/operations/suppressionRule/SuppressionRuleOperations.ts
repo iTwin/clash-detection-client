@@ -31,7 +31,9 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       const rules = (response as ResponseFromGetSuppressionRuleListMinimal).suppressionRules;
       return rules;
     };
-
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<MinimalSuppressionRule>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
@@ -55,7 +57,9 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       const rules = (response as ResponseFromGetSuppressionRuleList).suppressionRules;
       return rules;
     };
-
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<SuppressionRuleDetails>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
@@ -74,6 +78,9 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
    */
   public async getSingle(params: ParamsToGetSuppressionRule): Promise<SuppressionRuleDetails> {
     const { accessToken, ruleId, userMetadata } = params;
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     const response = await this.sendGetRequest<ResponseFromGetSuppressionRule>({
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleRuleUrl({ ruleId }),
@@ -91,6 +98,9 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
    */
   public async delete(params: ParamsToDeleteSuppressionRule): Promise<void> {
     const { accessToken, ruleId } = params;
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     await this.sendDeleteRequest<void>({
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteRuleUrl({ ruleId }),
@@ -110,6 +120,9 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       description: params.reason,
       parameters: params.parameters,
     };
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     const response = await this.sendPostRequest<ResponseFromCreateSuppressionRule>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.createRuleUrl(),
@@ -130,6 +143,9 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       displayName: params.displayName,
       description: params.reason,
     };
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     const response = await this.sendPutRequest<ResponseFromUpdateSuppressionRule>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.updateRuleUrl(params),

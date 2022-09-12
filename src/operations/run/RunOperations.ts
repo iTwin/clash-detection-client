@@ -24,6 +24,9 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    * @returns {Promise<MinimalRun[]>} minimal Run list. See {@link MinimalRun}.
    */
   public async getMinimalList(params: ParamsToGetRunList): Promise<MinimalRun[]> {
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     const response = await this.sendGetRequest<ResponseFromGetRunListMinimal>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRunListUrl({ urlParams: params.urlParams }),
@@ -41,6 +44,9 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    * @returns {Promise<RunDetails[]>} array of Run details. See {@link RunDetails}.
    */
   public async getRepresentationList(params: ParamsToGetRunList): Promise<RunDetails[]> {
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     const response = await this.sendGetRequest<ResponseFromGetRunList>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRunListUrl({ urlParams: params.urlParams }),
@@ -58,6 +64,9 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    */
   public async getSingle(params: ParamsToGetRun): Promise<RunDetails> {
     const { accessToken, runId } = params;
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     const response = await this.sendGetRequest<ResponseFromGetRun>({
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleRunUrl({ runId }),
@@ -72,6 +81,9 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    * @returns {Promise<void>}.
    */
   public async delete(params: ParamsToDeleteRun): Promise<void> {
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     await this.sendDeleteRequest<void>({
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteRunUrl(params),
