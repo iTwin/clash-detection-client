@@ -71,6 +71,7 @@ export class OperationsBase<TOptions extends OperationsBaseOptions> {
     return {
       entities: params.entityCollectionAccessor(response),
       next: response._links.next
+        // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
         ? async () => this.getEntityCollectionPage({ ...params, url: response._links.next!.href })
         : undefined,
     };
@@ -78,22 +79,22 @@ export class OperationsBase<TOptions extends OperationsBaseOptions> {
 
   private async formHeaders(params: AuthorizationParam & { preferReturn?: PreferReturn, containsBody?: boolean, userMetadata?: boolean }): Promise<Dictionary<string>> {
     const headers: Dictionary<string> = {};
-    if (params.accessToken)
+    if (params.accessToken) {
       headers[Constants.headers.authorization] = params.accessToken;
-    else if (this._options.accessTokenCallback) {
+    } else if (this._options.accessTokenCallback) {
       headers[Constants.headers.authorization] = await this._options.accessTokenCallback();
     }
     headers[Constants.headers.accept] = `application/vnd.bentley.${this._options.api.version}+json`;
 
-    if (params.preferReturn)
+    if (params.preferReturn) {
       headers[Constants.headers.prefer] = `return=${params.preferReturn}`;
-
-    if (params.containsBody)
+    }
+    if (params.containsBody) {
       headers[Constants.headers.contentType] = Constants.headers.values.contentType;
-
-    if (params.userMetadata)
+    }
+    if (params.userMetadata) {
       headers[Constants.headers.userMetadata] = "true";
-
+    }
     return headers;
   }
 }

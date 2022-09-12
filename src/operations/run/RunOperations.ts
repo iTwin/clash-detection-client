@@ -28,6 +28,7 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
       throw new Error(`Access token or callback is required`);
     }
     const response = await this.sendGetRequest<ResponseFromGetRunListMinimal>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRunListUrl({ urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
@@ -48,6 +49,7 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
       throw new Error(`Access token or callback is required`);
     }
     const response = await this.sendGetRequest<ResponseFromGetRunList>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRunListUrl({ urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
@@ -64,10 +66,11 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    */
   public async getSingle(params: ParamsToGetRun): Promise<RunDetails> {
     const { accessToken, runId } = params;
-    if (!params.accessToken && !this._options.accessTokenCallback) {
+    if (!accessToken && !this._options.accessTokenCallback) {
       throw new Error(`Access token or callback is required`);
     }
     const response = await this.sendGetRequest<ResponseFromGetRun>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleRunUrl({ runId }),
     });
@@ -85,6 +88,7 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
       throw new Error(`Access token or callback is required`);
     }
     await this.sendDeleteRequest<void>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteRunUrl(params),
     });

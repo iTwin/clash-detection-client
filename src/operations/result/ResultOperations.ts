@@ -23,10 +23,11 @@ export class ResultOperations<TOptions extends OperationOptions> extends Operati
    */
   public async get(params: ParamsToGetResult): Promise<ResponseFromGetResult> {
     const { accessToken, resultId } = params;
-    if (!params.accessToken && !this._options.accessTokenCallback) {
+    if (!accessToken && !this._options.accessTokenCallback) {
       throw new Error(`Access token or callback is required`);
     }
     const response = await this.sendGetRequest<ResponseFromGetResult>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getResultUrl({ resultId }),
     });

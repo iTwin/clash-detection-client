@@ -35,6 +35,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       throw new Error(`Access token or callback is required`);
     }
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<MinimalSuppressionRule>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
       preferReturn: PreferReturn.Minimal,
@@ -61,6 +62,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       throw new Error(`Access token or callback is required`);
     }
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<SuppressionRuleDetails>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
@@ -78,10 +80,11 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
    */
   public async getSingle(params: ParamsToGetSuppressionRule): Promise<SuppressionRuleDetails> {
     const { accessToken, ruleId, userMetadata } = params;
-    if (!params.accessToken && !this._options.accessTokenCallback) {
+    if (!accessToken && !this._options.accessTokenCallback) {
       throw new Error(`Access token or callback is required`);
     }
     const response = await this.sendGetRequest<ResponseFromGetSuppressionRule>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleRuleUrl({ ruleId }),
       userMetadata: userMetadata ?? false,
@@ -98,10 +101,11 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
    */
   public async delete(params: ParamsToDeleteSuppressionRule): Promise<void> {
     const { accessToken, ruleId } = params;
-    if (!params.accessToken && !this._options.accessTokenCallback) {
+    if (!accessToken && !this._options.accessTokenCallback) {
       throw new Error(`Access token or callback is required`);
     }
     await this.sendDeleteRequest<void>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteRuleUrl({ ruleId }),
     });
@@ -124,6 +128,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       throw new Error(`Access token or callback is required`);
     }
     const response = await this.sendPostRequest<ResponseFromCreateSuppressionRule>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.createRuleUrl(),
       body,
@@ -147,6 +152,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       throw new Error(`Access token or callback is required`);
     }
     const response = await this.sendPutRequest<ResponseFromUpdateSuppressionRule>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.updateRuleUrl(params),
       body,

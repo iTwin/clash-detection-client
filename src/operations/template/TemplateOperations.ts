@@ -34,6 +34,7 @@ export class TemplateOperations<TOptions extends OperationOptions> extends Opera
       throw new Error(`Access token or callback is required`);
     }
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<SuppressionRuleTemplate>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getTemplateListUrl({ urlParams: params.urlParams }),
       entityCollectionAccessor,

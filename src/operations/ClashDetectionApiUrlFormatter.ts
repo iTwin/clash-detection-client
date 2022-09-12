@@ -82,13 +82,13 @@ export class ClashDetectionApiUrlFormatter {
   protected formQueryString(urlParameters: Dictionary<UrlParameterValue> | undefined): string {
     let queryString = "";
     for (const urlParameterKey in urlParameters) {
-      if (!Object.prototype.hasOwnProperty.call(urlParameters, urlParameterKey))
+      if (!Object.prototype.hasOwnProperty.call(urlParameters, urlParameterKey)) {
         continue;
-
+      }
       const urlParameterValue = urlParameters[urlParameterKey];
-      if (!this.shouldAppendToUrl(urlParameterValue))
+      if (!this.shouldAppendToUrl(urlParameterValue)) {
         continue;
-
+      }
       queryString = this.appendToQueryString(queryString, urlParameterKey, urlParameterValue);
     }
 
@@ -96,12 +96,12 @@ export class ClashDetectionApiUrlFormatter {
   }
 
   private shouldAppendToUrl(urlParameterValue: UrlParameterValue): boolean {
-    if (urlParameterValue === null || urlParameterValue === undefined)
+    if (urlParameterValue === null || urlParameterValue === undefined) {
       return false;
-
-    if (typeof urlParameterValue === "string" && !urlParameterValue.trim())
+    }
+    if (typeof urlParameterValue === "string" && !urlParameterValue.trim()) {
       return false;
-
+    }
     return true;
   }
 

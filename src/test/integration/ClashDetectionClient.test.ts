@@ -228,7 +228,9 @@ describe("ClashDetectionClient", async () => {
     chai.expect(run).to.not.be.undefined;
 
     // Save id of test run
-    clashDetectionClient.runId = run!.id;
+    if (run) {
+      clashDetectionClient.runId = run.id;
+    }
   });
 
   it("should get a list of runs (minimal)", async () => {

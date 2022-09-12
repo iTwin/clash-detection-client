@@ -37,6 +37,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       throw new Error(`Access token or callback is required`);
     }
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<TestItem>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getTestListUrl({ urlParams: params.urlParams }),
       entityCollectionAccessor,
@@ -53,10 +54,11 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    */
   public async getSingle(params: ParamsToGetTest): Promise<TestDetails> {
     const { accessToken, testId, userMetadata } = params;
-    if (!params.accessToken && !this._options.accessTokenCallback) {
+    if (!accessToken && !this._options.accessTokenCallback) {
       throw new Error(`Access token or callback is required`);
     }
     const response = await this.sendGetRequest<ResponseFromGetTest>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleTestUrl({ testId }),
       userMetadata: userMetadata ?? false,
@@ -87,6 +89,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       throw new Error(`Access token or callback is required`);
     }
     const response = await this.sendPostRequest<ResponseFromCreateTest>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.createTestUrl(),
       body,
@@ -117,6 +120,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       throw new Error(`Access token or callback is required`);
     }
     const response = await this.sendPutRequest<ResponseFromUpdateTest>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.updateTestUrl(params),
       body,
@@ -142,6 +146,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       if (params.accessToken) {
         authorization = ClashDetectionClient.toAuthorizationCallback(params.accessToken);
       } else {
+        // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
         const accessToken = await this._options.accessTokenCallback!();
         authorization = ClashDetectionClient.toAuthorizationCallback(accessToken);
       }
@@ -157,9 +162,9 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       };
       const namedVersionsIterator: EntityListIterator<MinimalNamedVersion> = iModelsClient.namedVersions.getMinimalList(getNamedVersionListParams);
       const namedVersions: MinimalNamedVersion[] = await toArray(namedVersionsIterator);
-      if (namedVersions.length === 0)
+      if (namedVersions.length === 0) {
         return undefined;
-
+      }
       params.namedVersionId = namedVersions[0].id;
     }
     const body = {
@@ -169,6 +174,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       testSettings: params.testSettings,
     };
     const response = await this.sendPostRequest<ResponseFromRunTest>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.runTestUrl(),
       body,
@@ -186,10 +192,11 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    */
   public async delete(params: ParamsToDeleteTest): Promise<void> {
     const { accessToken, testId } = params;
-    if (!params.accessToken && !this._options.accessTokenCallback) {
+    if (!accessToken && !this._options.accessTokenCallback) {
       throw new Error(`Access token or callback is required`);
     }
     await this.sendDeleteRequest<void>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteTestUrl({ testId }),
     });
