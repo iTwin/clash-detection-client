@@ -2,6 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
+import { OperationUtils } from "../OperationUtils";
 import { OperationsBase } from "../../base/OperationsBase";
 import { PreferReturn } from "../../base/interfaces/CommonInterfaces";
 import type { MinimalRun, ResponseFromGetRun, ResponseFromGetRunList, ResponseFromGetRunListMinimal, RunDetails } from "../../base/interfaces/apiEntities/RunInterfaces";
@@ -24,9 +25,7 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    * @returns {Promise<MinimalRun[]>} minimal Run list. See {@link MinimalRun}.
    */
   public async getMinimalList(params: ParamsToGetRunList): Promise<MinimalRun[]> {
-    if (!params.accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     const response = await this.sendGetRequest<ResponseFromGetRunListMinimal>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
@@ -45,9 +44,7 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    * @returns {Promise<RunDetails[]>} array of Run details. See {@link RunDetails}.
    */
   public async getRepresentationList(params: ParamsToGetRunList): Promise<RunDetails[]> {
-    if (!params.accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     const response = await this.sendGetRequest<ResponseFromGetRunList>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
@@ -66,9 +63,7 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    */
   public async getSingle(params: ParamsToGetRun): Promise<RunDetails> {
     const { accessToken, runId } = params;
-    if (!accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     const response = await this.sendGetRequest<ResponseFromGetRun>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
@@ -84,9 +79,7 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    * @returns {Promise<void>}.
    */
   public async delete(params: ParamsToDeleteRun): Promise<void> {
-    if (!params.accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     await this.sendDeleteRequest<void>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),

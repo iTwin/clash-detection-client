@@ -2,6 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
+import { OperationUtils } from "../OperationUtils";
 import { OperationsBase } from "../../base/OperationsBase";
 import { EntityListIteratorImpl } from "../../base/iterators/EntityListIteratorImpl";
 import { IModelsClient, NamedVersionOrderByProperty, OrderByOperator, toArray } from "@itwin/imodels-client-management";
@@ -33,9 +34,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       const tests = (response as ResponseFromGetTestList).tests;
       return tests;
     };
-    if (!params.accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<TestItem>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
@@ -54,9 +53,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    */
   public async getSingle(params: ParamsToGetTest): Promise<TestDetails> {
     const { accessToken, testId, userMetadata } = params;
-    if (!accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     const response = await this.sendGetRequest<ResponseFromGetTest>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
@@ -85,9 +82,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       suppressionRules: params.suppressionRules,
       advancedSettings: params.advancedSettings,
     };
-    if (!params.accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     const response = await this.sendPostRequest<ResponseFromCreateTest>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
@@ -116,9 +111,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       suppressionRules: params.suppressionRules,
       advancedSettings: params.advancedSettings,
     };
-    if (!params.accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     const response = await this.sendPutRequest<ResponseFromUpdateTest>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
@@ -136,9 +129,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    * @returns {Promise<Run>} newly started Run. See {@link Run}.
    */
   public async runTest(params: ParamsToRunTest): Promise<Run | undefined> {
-    if (!params.accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     // If namedVersionId is not specified, then try to get latest version as default
     if (params.namedVersionId === undefined) {
       const iModelsClient: IModelsClient = new IModelsClient();
@@ -192,9 +183,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    */
   public async delete(params: ParamsToDeleteTest): Promise<void> {
     const { accessToken, testId } = params;
-    if (!accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     await this.sendDeleteRequest<void>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),

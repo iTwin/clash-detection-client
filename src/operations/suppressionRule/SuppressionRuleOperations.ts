@@ -2,6 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
+import { OperationUtils } from "../OperationUtils";
 import { OperationsBase } from "../../base/OperationsBase";
 import { PreferReturn } from "../../base/interfaces/CommonInterfaces";
 import { EntityListIteratorImpl } from "../../base/iterators/EntityListIteratorImpl";
@@ -31,9 +32,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       const rules = (response as ResponseFromGetSuppressionRuleListMinimal).suppressionRules;
       return rules;
     };
-    if (!params.accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<MinimalSuppressionRule>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
@@ -58,9 +57,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       const rules = (response as ResponseFromGetSuppressionRuleList).suppressionRules;
       return rules;
     };
-    if (!params.accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<SuppressionRuleDetails>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
@@ -80,9 +77,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
    */
   public async getSingle(params: ParamsToGetSuppressionRule): Promise<SuppressionRuleDetails> {
     const { accessToken, ruleId, userMetadata } = params;
-    if (!accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     const response = await this.sendGetRequest<ResponseFromGetSuppressionRule>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
@@ -101,9 +96,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
    */
   public async delete(params: ParamsToDeleteSuppressionRule): Promise<void> {
     const { accessToken, ruleId } = params;
-    if (!accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     await this.sendDeleteRequest<void>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
@@ -124,9 +117,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       description: params.reason,
       parameters: params.parameters,
     };
-    if (!params.accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     const response = await this.sendPostRequest<ResponseFromCreateSuppressionRule>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
@@ -148,9 +139,7 @@ export class SuppressionRuleOperations<TOptions extends OperationOptions> extend
       displayName: params.displayName,
       description: params.reason,
     };
-    if (!params.accessToken && !this._options.accessTokenCallback) {
-      throw new Error(`Access token or callback is required`);
-    }
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     const response = await this.sendPutRequest<ResponseFromUpdateSuppressionRule>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
