@@ -8,8 +8,13 @@ import type { EntityListIterator } from "../../base/iterators/EntityListIterator
 import type { ClashDetectionClientOptions } from "../../ClashDetectionClient";
 import { ClashDetectionClient } from "../../ClashDetectionClient";
 import { TestConfig } from "../TestConfig";
-import type { MinimalRun, MinimalSuppressionRule, ResponseFromGetResult, Run, RunDetails, SuppressionRuleCreate, SuppressionRuleDetails, SuppressionRuleTemplate, SuppressionRuleUpdate, Test, TestDetails, TestItem } from "../../base";
-import type { ParamsToCreateSuppressionRule, ParamsToCreateTest, ParamsToDeleteRun, ParamsToDeleteSuppressionRule, ParamsToDeleteTest, ParamsToGetResult, ParamsToGetRun, ParamsToGetRunList, ParamsToGetSuppressionRule, ParamsToGetSuppressionRuleList, ParamsToGetTemplateList, ParamsToGetTest, ParamsToGetTestList, ParamsToRunTest, ParamsToUpdateSuppressionRule, ParamsToUpdateTest } from "../../operations";
+import type { MinimalRun, MinimalSuppressionRule, ModelsAndCategories, ResponseFromGetResult, Run, RunDetails, SchemaInfo,
+  SuppressionRuleCreate, SuppressionRuleDetails, SuppressionRuleTemplate, SuppressionRuleUpdate, Test, TestDetails, TestItem } from "../../base";
+import type { ParamsToCreateSuppressionRule, ParamsToCreateTest, ParamsToDeleteRun, ParamsToDeleteSuppressionRule,
+  ParamsToDeleteTest, ParamsToExtractModelsAndCategories, ParamsToExtractSchemaInfo, ParamsToGetModelsAndCategories,
+  ParamsToGetResult, ParamsToGetRun, ParamsToGetRunList, ParamsToGetSchemaInfo, ParamsToGetSuppressionRule,
+  ParamsToGetSuppressionRuleList, ParamsToGetTemplateList, ParamsToGetTest, ParamsToGetTestList, ParamsToRunTest,
+  ParamsToUpdateSuppressionRule, ParamsToUpdateTest } from "../../operations";
 
 chai.should();
 describe("ClashDetectionClient", async () => {
@@ -288,6 +293,48 @@ describe("ClashDetectionClient", async () => {
 
     // Expect result to be found
     chai.expect(response).to.not.be.undefined;
+  });
+
+  it("should get schema info by project and iModel id", async () => {
+    const params: ParamsToGetSchemaInfo = {
+      iModelId,
+      urlParams: {
+        projectId,
+      },
+    };
+    const schemaInfo: SchemaInfo = await clashDetectionClient.imodel.getSchemaInfo(params);
+
+    // Expect schemaInfo to be returned
+    chai.expect(schemaInfo).to.not.be.undefined;
+  });
+
+  it("should extract schema info by project and iModel id", async () => {
+    const params: ParamsToExtractSchemaInfo = {
+      iModelId,
+      projectId,
+    };
+    await clashDetectionClient.imodel.extractSchemaInfo(params);
+  });
+
+  it("should get models and categories by project and iModel id", async () => {
+    const params: ParamsToGetModelsAndCategories = {
+      iModelId,
+      urlParams: {
+        projectId,
+      },
+    };
+    const modelsAndCategories: ModelsAndCategories = await clashDetectionClient.imodel.getModelsAndCategories(params);
+
+    // Expect modelsAndCategories to be returned
+    chai.expect(modelsAndCategories).to.not.be.undefined;
+  });
+
+  it("should extract models and categories by project and iModel id", async () => {
+    const params: ParamsToExtractModelsAndCategories = {
+      iModelId,
+      projectId,
+    };
+    await clashDetectionClient.imodel.extractModelsAndCategories(params);
   });
 
   it("should delete a suppression rule by id", async () => {

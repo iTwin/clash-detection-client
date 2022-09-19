@@ -3,6 +3,7 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import type { Dictionary } from "../base/interfaces/UtilityTypes";
+import type { ParamsToGetModelsAndCategoriesUrl, ParamsToGetSchemaInfoUrl } from "./imodel/IModelOperationParams";
 import type { ParamsToGetTemplateListUrl } from "./template/TemplateOperationParams";
 import type { ParamsToGetTestListUrl } from "./test/TestOperationParams";
 import type { ParamsToGetSuppressionRuleListUrl } from "./suppressionRule/SuppressionRuleOperationParams";
@@ -77,6 +78,22 @@ export class ClashDetectionApiUrlFormatter {
 
   public getResultUrl(params: { resultId: string } ): string {
     return `${this.baseUrl}/results/${params.resultId}`;
+  }
+
+  public getSchemaInfoUrl(params: { iModelId: string, urlParams?: ParamsToGetSchemaInfoUrl }): string {
+    return `${this.baseUrl}/schema/imodels/${params.iModelId}${this.formQueryString({ ...params.urlParams })}`;
+  }
+
+  public extractSchemaInfoUrl(params: { iModelId: string }): string {
+    return `${this.baseUrl}/schema/imodels/${params.iModelId}}`;
+  }
+
+  public getModelsAndCategoriesUrl(params: { iModelId: string, urlParams?: ParamsToGetModelsAndCategoriesUrl }): string {
+    return `${this.baseUrl}/modelsAndCategories/imodels/${params.iModelId}${this.formQueryString({ ...params.urlParams })}`;
+  }
+
+  public extractModelsAndCategoriesUrl(params: { iModelId: string }): string {
+    return `${this.baseUrl}/modelsAndCategories/imodels/${params.iModelId}}`;
   }
 
   protected formQueryString(urlParameters: Dictionary<UrlParameterValue> | undefined): string {
