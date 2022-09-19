@@ -17,9 +17,6 @@
     "build:esm": "tsc 1>&2 --module ES2020 --outDir lib/esm",
     "lint": "eslint -f visualstudio \"./src/**/*.ts\" 1>&2",
     "lint:fix": "npm run lint -- --fix",
-    "webpackTests": "webpack --config src/test/utils/webpack.config.js 1>&2",
-    "test": "",
-    "test:chrome": "certa -r chrome",
     "pack": "npm pack",
     "clean": "rimraf lib"
   },
@@ -53,12 +50,9 @@
     "dotenv-expand": "^5.1.0",
     "eslint": "^7.32.0",
     "mocha": "^9.2.2",
-    "node-polyfill-webpack-plugin": "^1.1.4",
     "rimraf": "^3.0.2",
     "source-map-loader": "^1.0.0",
-    "typescript": "~4.6.4",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
+    "typescript": "~4.6.4"
   },
   "eslintConfig": {
     "plugins": [
