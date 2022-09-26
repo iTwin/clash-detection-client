@@ -2,6 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
+import { OperationUtils } from "../OperationUtils";
 import { OperationsBase } from "../../base/OperationsBase";
 import type { ModelsAndCategories, ResponseFromGetModelsAndCategories, ResponseFromGetSchemaInfo, SchemaInfo } from "../../base/interfaces/apiEntities/IModelInterfaces";
 import type { OperationOptions } from "../OperationOptions";
@@ -23,7 +24,9 @@ export class IModelOperations<TOptions extends OperationOptions> extends Operati
    */
   public async getSchemaInfo(params: ParamsToGetSchemaInfo): Promise<SchemaInfo> {
     const { accessToken, iModelId } = params;
+    OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     const response = await this.sendGetRequest<ResponseFromGetSchemaInfo>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSchemaInfoUrl({ iModelId, urlParams: params.urlParams }),
     });
@@ -41,7 +44,9 @@ export class IModelOperations<TOptions extends OperationOptions> extends Operati
     const body = {
       projectId,
     };
+    OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     await this.sendPostRequest<void>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.extractSchemaInfoUrl({ iModelId }),
       body,
@@ -57,7 +62,9 @@ export class IModelOperations<TOptions extends OperationOptions> extends Operati
    */
   public async getModelsAndCategories(params: ParamsToGetModelsAndCategories): Promise<ModelsAndCategories> {
     const { accessToken, iModelId } = params;
+    OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     const response = await this.sendGetRequest<ResponseFromGetModelsAndCategories>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getModelsAndCategoriesUrl({ iModelId, urlParams: params.urlParams }),
     });
@@ -75,7 +82,9 @@ export class IModelOperations<TOptions extends OperationOptions> extends Operati
     const body = {
       projectId,
     };
+    OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     await this.sendPostRequest<void>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.extractModelsAndCategoriesUrl({ iModelId }),
       body,

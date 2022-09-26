@@ -1,6 +1,6 @@
 {
   "name": "@itwin/clash-detection-client",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Clash Detection client for the iTwin platform",
   "main": "lib/cjs/clash-detection-client.js",
   "module": "lib/esm/clash-detection-client.js",
