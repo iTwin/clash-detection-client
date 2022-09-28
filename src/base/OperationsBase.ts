@@ -10,7 +10,6 @@ import type { RestClient } from "./rest/RestClient";
 type SendGetRequestParams = AuthorizationParam & { url: string, preferReturn?: PreferReturn, userMetadata?: boolean };
 type SendPostRequestParams = AuthorizationParam & { url: string, body: unknown };
 type SendPutRequestParams = AuthorizationParam & { url: string, body: unknown };
-type SendPatchRequestParams = SendPostRequestParams;
 type SendDeleteRequestParams = AuthorizationParam & { url: string };
 
 export interface OperationsBaseOptions {
@@ -40,14 +39,6 @@ export class OperationsBase<TOptions extends OperationsBaseOptions> {
 
   protected async sendPutRequest<TResponse>(params: SendPutRequestParams): Promise<TResponse> {
     return this._options.restClient.sendPutRequest<TResponse>({
-      url: params.url,
-      body: params.body,
-      headers: await this.formHeaders({ ...params, containsBody: true }),
-    });
-  }
-
-  protected async sendPatchRequest<TResponse>(params: SendPatchRequestParams): Promise<TResponse> {
-    return this._options.restClient.sendPatchRequest<TResponse>({
       url: params.url,
       body: params.body,
       headers: await this.formHeaders({ ...params, containsBody: true }),

@@ -7,6 +7,7 @@ module.exports = {
       jsx: true, // Allows for the parsing of JSX
     },
   },
+  plugins: ["@itwin"],
   extends: [
     "plugin:@typescript-eslint/recommended", // Uses the recommended rules from @typescript-eslint/eslint-plugin
   ],
@@ -16,8 +17,18 @@ module.exports = {
       "error",
       { allow: ["arrowFunctions"] },
     ],
+    "space-before-function-paren": [
+      "error",
+      {
+        anonymous: "always",
+        named: "never",
+        asyncArrow: "always",
+      },
+    ],
     curly: "error",
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/consistent-type-imports": "error",
     "no-restricted-imports": ["error", ".."],
+    "no-duplicate-imports": "off",
   },
 };
