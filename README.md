@@ -15,9 +15,11 @@ The __@itwin/clash-detection-client__ package consists of thin wrapper functions
 - [EntityListIterator](./src/base/iterators/EntityListIterator.ts#L6)
 - [MinimalSuppressionRule](./src/base/interfaces/apiEntities/SuppressionRuleInterfaces.ts#L25)
 - [MinimalRun](./src/base/interfaces/apiEntities/RunInterfaces.ts#L15)
+- [ModelsAndCategories](./src/base/interfaces/apiEntities/IModelInterfaces.ts#L88)
 - [ResponseFromGetResult](./src/base/interfaces/apiEntities/ResultInterfaces.ts#L47)
 - [Run](./src/base/interfaces/apiEntities/TestInterfaces.ts#L102)
 - [RunDetails](./src/base/interfaces/apiEntities/RunInterfaces.ts#L25)
+- [SchemaInfo](./src/base/interfaces/apiEntities/IModelInterfaces.ts#L54)
 - [SuppressionRule](./src/base/interfaces/apiEntities/SuppressionRuleInterfaces.ts#L76)
 - [SuppressionRuleDetails](./src/base/interfaces/apiEntities/SuppressionRuleInterfaces.ts#L35)
 - [SuppressionRuleTemplate](./src/base/interfaces/apiEntities/TemplateInterfaces.ts#L7)
@@ -26,6 +28,10 @@ The __@itwin/clash-detection-client__ package consists of thin wrapper functions
 - [TestItem](./src/base/interfaces/apiEntities/TestInterfaces.ts#L24)
 
 ## Key methods
+- [`client.imodel.extractModelsAndCategories(params: ParamsToExtractModelsAndCategories): Promise<void>`](#extract-models-and-categories)
+- [`client.imodel.getModelsAndCategories(params: ParamsToGetModelsAndCategories): Promise<ModelsAndCategories>`](#get-models-and-categories)
+- [`client.imodel.extractSchemaInfo(params: ParamsToExtractSchemaInfo): Promise<void>`](#extract-schema-information)
+- [`client.imodel.getSchemaInfo(params: ParamsToGetSchemaInfo): Promise<SchemaInfo>`](#get-schema-information)
 - [`client.templates.getList(params: ParamsToGetTemplateList): EntityListIterator<RuleTemplate>`](#get-all-clash-detection-suppression-rule-templates)
 - [`client.rules.create(params: ParamsToCreateRule): Promise<SuppressionRule>`](#create-clash-detection-suppression-rule)
 - [`client.rules.update(params: ParamsToUpdateRule): Promise<SuppressionRule>`](#update-clash-detection-suppression-rule)
@@ -79,8 +85,8 @@ async function printSuppressionRuleTemplateIds(accessToken: string, projectId: s
   const params: ParamsToGetTemplateList = {
     accessToken,
     urlParams: {
-      projectId
-    }
+      projectId,
+    },
   };
   const templatesIterator: EntityListIterator<SuppressionRuleTemplate> = clashDetectionClient.templates.getList(params);
   for await (const template of templatesIterator)
@@ -146,8 +152,8 @@ async function printRuleIds(accessToken: string, projectId: string): Promise<voi
   const params: ParamsToGetSuppressionRuleList = {
     accessToken,
     urlParams: {
-      projectId
-    }
+      projectId,
+    },
   };
   const rulesIterator: EntityListIterator<MinimalSuppressionRule> = clashDetectionClient.rules.getMinimalList(params);
   for await (const rule of rulesIterator)
@@ -165,8 +171,9 @@ async function printRuleIds(accessToken: string, projectId: string): Promise<voi
   const params: ParamsToGetSuppressionRuleList = {
     accessToken,
     urlParams: {
-      projectId
-    }
+      projectId,
+    },
+    userMetadata: true,
   };
   const rulesIterator: EntityListIterator<SuppressionRuleDetails> = clashDetectionClient.rules.getRepresentationList(params);
   for await (const rule of rulesIterator)
@@ -183,7 +190,8 @@ async function getClashDetectionRule(accessToken: string, ruleId: string): Promi
   const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
   const params: ParamsToGetSuppressionRule = {
     accessToken,
-    ruleId
+    ruleId,
+    userMetadata: true,
   };
   const rule: SuppressionRuleDetails = await clashDetectionClient.rules.getSingle(params);
 
@@ -200,7 +208,7 @@ async function deleteClashDetectionSuppressionRule(accessToken: string, ruleId: 
   const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
   const params: ParamsToDeleteSuppressionRule = {
     accessToken,
-    ruleId
+    ruleId,
   };
   await clashDetectionClient.rules.delete(params);
 }
@@ -223,6 +231,7 @@ async function createClashDetectionTest(accessToken: string, projectId: string, 
       modelIds: [ "0x21","0x66","0x68","0x6a" ],
       categoryIds: [],
       query: "SELECT BisCore.Element.ECInstanceId FROM BisCore.Element WHERE BisCore.Element.Model.id=0x6c",
+      queryName: "Test1",
       selfCheck: true,
       clearance: 0.001,
     },
@@ -236,6 +245,11 @@ async function createClashDetectionTest(accessToken: string, projectId: string, 
     touchingTolerance: 0,
     includeSubModels: false,
     suppressionRules,
+    advancedSettings: {
+      longClash: true,
+      calculateOverlap: true,
+      toleranceOverlapValidation, true,
+    },
   };
   const test: Test = await clashDetectionClient.tests.create(params);
 
@@ -260,6 +274,7 @@ async function updateClashDetectionTest(accessToken: string, testId: string, rul
       modelIds: [ "0x21","0x66","0x68","0x6a" ],
       categoryIds: [],
       query: "SELECT BisCore.Element.ECInstanceId FROM BisCore.Element WHERE BisCore.Element.Model.id=0x6c",
+      queryName: "Test1",
       selfCheck: true,
       clearance: 0.001,
     },
@@ -273,6 +288,11 @@ async function updateClashDetectionTest(accessToken: string, testId: string, rul
     touchingTolerance: 0,
     includeSubModels: false,
     suppressionRules,
+    advancedSettings: {
+      longClash: true,
+      calculateOverlap: true,
+      toleranceOverlapValidation, true,
+    },
   };
   const test: Test = await clashDetectionClient.tests.update(params);
 
@@ -289,8 +309,9 @@ async function printTestIds(accessToken: string, projectId: string): Promise<voi
   const params: ParamsToGetTestList = {
     accessToken,
     urlParams: {
-      projectId
-    }
+      projectId,
+    },
+    userMetadata: true,
   };
   const testsIterator: EntityListIterator<TestItem> = clashDetectionClient.tests.getList(params);
   for await (const test of testsIterator)
@@ -307,7 +328,8 @@ async function getClashDetectionTest(accessToken: string, testId: string): Promi
   const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
   const params: ParamsToGetTest = {
     accessToken,
-    testId
+    testId,
+    userMetadata: true,
   };
   const test: TestDetails = await clashDetectionClient.tests.getSingle(params);
 
@@ -317,16 +339,17 @@ async function getClashDetectionTest(accessToken: string, testId: string): Promi
 
 ### Run clash detection test
 ```typescript
-import { ClashDetectionClient, ParamsToRunTest, Run } from "@itwin/clash-detection-client";
+import { ClashDetectionClient, ParamsToRunTest, Run, TestSettings } from "@itwin/clash-detection-client";
 
 /** Function that runs a clash detection test and prints its run id. */
-async function runClashDetectionTest(accessToken: string, testId: string, iModelId: string, namedVersionId?: string): Promise<void> {
+async function runClashDetectionTest(accessToken: string, testId: string, iModelId: string, namedVersionId?: string, testSettings?: TestSettings): Promise<void> {
   const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
   const params: ParamsToRunTest = {
     accessToken,
     testId,
     iModelId,
-    namedVersionId,   // Optional - defaults to latest
+    namedVersionId,   // Optional - defaults to latest version
+    testSettings,     // Optional
   };
   const run: Run = await clashDetectionClient.tests.runTest(params);
 
@@ -343,7 +366,7 @@ async function deleteClashDetectionTest(accessToken: string, testId: string): Pr
   const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
   const params: ParamsToDeleteTest = {
     accessToken,
-    testId
+    testId,
   };
   await clashDetectionClient.tests.delete(params);
 }
@@ -358,8 +381,8 @@ async function printRunIds(accessToken: string, projectId: string): Promise<void
   const params: ParamsToGetRunList = {
     accessToken,
     urlParams: {
-      projectId
-    }
+      projectId,
+    },
   };
   const runs: MinimalRun[] = await clashDetectionClient.runs.getMinimalList(params);
   runs.forEach((run) => {
@@ -377,8 +400,8 @@ async function printRunIds(accessToken: string, projectId: string): Promise<void
   const params: ParamsToGetRunList = {
     accessToken,
     urlParams: {
-      projectId
-    }
+      projectId,
+    },
   };
   const runs: RunDetails[] = await clashDetectionClient.runs.getRepresentationList(params);
   runs.forEach((run) => {
@@ -396,7 +419,7 @@ async function getClashDetectionRun(accessToken: string, runId: string): Promise
   const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
   const params: ParamsToGetRun = {
     accessToken,
-    runId
+    runId,
   };
   const run: RunDetails = await clashDetectionClient.runs.getSingle(params);
 
@@ -413,7 +436,7 @@ async function deleteClashDetectionRun(accessToken: string, runId: string): Prom
   const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
   const params: ParamsToDeleteRun = {
     accessToken,
-    runId
+    runId,
   };
   await clashDetectionClient.runs.delete(params);
 }
@@ -421,17 +444,84 @@ async function deleteClashDetectionRun(accessToken: string, runId: string): Prom
 
 ### Get clash detection result
 ```typescript
-import { ClashDetectionClient, GetResultResponse, ParamsToGetResult } from "@itwin/clash-detection-client";
+import { ClashDetectionClient, ParamsToGetResult, ResponseFromGetResult } from "@itwin/clash-detection-client";
 
 /** Function that gets a clash detection result and prints the count of clashes. */
 async function getClashDetectionResult(accessToken: string, resultId: string): Promise<void> {
   const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
   const params: ParamsToGetResult = {
     accessToken,
-    resultId
+    resultId,
   };
-  const response: GetResultResponse = await clashDetectionClient.results.get(params);
+  const response: ResponseFromGetResult   = await clashDetectionClient.results.get(params);
 
   console.log('Results count: ${response.result.length.toString()}');
+}
+```
+
+### Extract models and categories
+```typescript
+import { ClashDetectionClient, ParamsToExtractModelsAndCategories } from "@itwin/clash-detection-client";
+/** Function that extracts models and categories. */
+async function extractModelsAndCategories(accessToken: string, projectId: string, iModelId: string): Promise<void> {
+  const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
+  const params: ParamsToExtractModelsAndCategories = {
+    accessToken,
+    iModelId,
+    urlParams: {
+      projectId
+    }
+  };
+  await clashDetectionClient.imodel.extractModelsAndCategories(params);
+}
+```
+
+### Get models and categories
+```typescript
+import { ClashDetectionClient, ModelsAndCategories, ParamsToGetModelsAndCategories } from "@itwin/clash-detection-client";
+/** Function that gets the list of models and categories in an iModel and prints the extraction status and count of models and categories. */
+async function getModelsAndCategories(accessToken: string, projectId: string, iModelId: string): Promise<void> {
+  const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
+  const params: ParamsToGetModelsAndCategories = {
+    iModelId,
+    urlParams: {
+      projectId,
+    },
+  };
+  const modelsAndCategories: ModelsAndCategories = await clashDetectionClient.imodel.getModelsAndCategories(params);
+  console.log('Status: ${modelsAndCategories.status}, model count: ${modelsAndCategories.models.length}, category count: ${modelsAndCategories.categories.length}');
+}
+```
+
+### Extract schema information
+```typescript
+import { ClashDetectionClient, ParamsToExtractSchemaInfo } from "@itwin/clash-detection-client";
+/** Function that extracts schema info. */
+async function extractSchemaInfo(accessToken: string, projectId: string, iModelId: string): Promise<void> {
+  const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
+  const params: ParamsToExtractSchemaInfo = {
+    accessToken,
+    iModelId,
+    urlParams: {
+      projectId
+    }
+  };
+  await clashDetectionClient.imodel.extractSchemaInfo(params);
+}
+```
+### Get schema information
+```typescript
+import { ClashDetectionClient, ParamsToGetSchemaInfo, SchemaInfo } from "@itwin/clash-detection-client";
+/** Function that gets the iModel schema information and prints the extraction status and count of schemas. */
+async function getSchemaInfo(accessToken: string, projectId: string, iModelId: string): Promise<void> {
+  const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
+  const params: ParamsToGetSchemaInfo = {
+    iModelId,
+    urlParams: {
+      projectId,
+    },
+  };
+  const schemaInfo: SchemaInfo = await clashDetectionClient.imodel.getSchemaInfo(params);
+  console.log('Status: ${schemaInfo.status}, schema count: ${schemaInfo.schema.length}');
 }
 ```

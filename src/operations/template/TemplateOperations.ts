@@ -2,6 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
+import { OperationUtils } from "../OperationUtils";
 import { OperationsBase } from "../../base/OperationsBase";
 import { EntityListIteratorImpl } from "../../base/iterators/EntityListIteratorImpl";
 import type { ResponseFromGetTemplates, SuppressionRuleTemplate } from "../../base/interfaces/apiEntities/TemplateInterfaces";
@@ -30,11 +31,13 @@ export class TemplateOperations<TOptions extends OperationOptions> extends Opera
       const templates = (response as ResponseFromGetTemplates).suppressionRuleTemplates;
       return templates;
     };
-
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<SuppressionRuleTemplate>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getTemplateListUrl({ urlParams: params.urlParams }),
       entityCollectionAccessor,
+      userMetadata: false,
     }));
   }
 }

@@ -2,7 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import type { CollectionResponse, Link } from "../CommonInterfaces";
+import type { AdvancedSettings, AllUserMetadata, CollectionResponse, ElementSetCriteria, Link } from "../CommonInterfaces";
 
 /** Links that belong to Test entity returned from Clash Detection API. */
 export interface TestDetailLinks {
@@ -10,8 +10,6 @@ export interface TestDetailLinks {
   createdBy: Link;
   /** Link to get user info of last modifier. */
   lastModifiedBy: Link;
-  /** Link to get Test details. */
-  test: Link;
 }
 
 export interface TestLinks {
@@ -19,6 +17,8 @@ export interface TestLinks {
   createdBy: Link;
   /** Link to get user info of last modifier. */
   lastModifiedBy: Link;
+  /** Link to get Test details. */
+  test: Link;
 }
 
 /** Test item. */
@@ -33,12 +33,16 @@ export interface TestItem {
   creationDateTime: string;
   /** Test modification date. */
   modificationDateTime: string;
+  /** User metadata. */
+  userMetadata: AllUserMetadata;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: TestLinks;
 }
 
 /** Test details. */
 export interface TestDetails {
+  /** Test id. */
+  id: string;
   /** Test display name. */
   displayName: string;
   /** Test description. */
@@ -47,12 +51,24 @@ export interface TestDetails {
   creationDateTime: string;
   /** Test modification date. */
   modificationDateTime: string;
-  /** Test rule ids. */
-  rules: string[];
-  /** Stop execution on failure flag. */
-  stopExecutionOnFailure: boolean;
+  /** Flag to suppress touching. */
+  suppressTouching: boolean;
+  /** Flag to include sub-models. */
+  includeSubModels: boolean;
+  /** The touching tolerance to be applied. */
+  touchingTolerance: number;
+  /** First set of elements to include in clash test. */
+  setA: ElementSetCriteria;
+  /** Second set of elements to include in clash test. */
+  setB: ElementSetCriteria;
+  /** The ids of the suppression rules. */
+  suppressionRules: string[];
+  /** User metadata. */
+  userMetadata: AllUserMetadata;
+  /** Advanced settings for clash test. */
+  advancedSettings: AdvancedSettings;
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  _links: TestLinks;
+  _links: TestDetailLinks;
 }
 
 /** Get Test API response. */
@@ -78,10 +94,20 @@ export interface Test {
   displayName: string;
   /** Test description. */
   description: string;
-  /** Test rule ids. */
-  rules: string[];
-  /** Stop execution on failure flag. */
-  stopExecutionOnFailure: boolean;
+  /** Flag to suppress touching. */
+  suppressTouching: boolean;
+  /** Flag to include sub-models. */
+  includeSubModels: boolean;
+  /** The touching tolerance to be applied. */
+  touchingTolerance: number;
+  /** First set of elements to include in clash test. */
+  setA: ElementSetCriteria;
+  /** Second set of elements to include in clash test. */
+  setB: ElementSetCriteria;
+  /** The ids of the suppression rules. */
+  suppressionRules: string[];
+  /** Advanced settings for clash test. */
+  advancedSettings: AdvancedSettings;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: TestSelfLink;
 }

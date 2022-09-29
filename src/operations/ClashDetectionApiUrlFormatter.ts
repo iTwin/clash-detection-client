@@ -3,6 +3,7 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import type { Dictionary } from "../base/interfaces/UtilityTypes";
+import type { ParamsToGetModelsAndCategoriesUrl, ParamsToGetSchemaInfoUrl } from "./imodel/IModelOperationParams";
 import type { ParamsToGetTemplateListUrl } from "./template/TemplateOperationParams";
 import type { ParamsToGetTestListUrl } from "./test/TestOperationParams";
 import type { ParamsToGetSuppressionRuleListUrl } from "./suppressionRule/SuppressionRuleOperationParams";
@@ -16,27 +17,27 @@ export class ClashDetectionApiUrlFormatter {
   }
 
   public getSingleRuleUrl(params: { ruleId: string } ): string {
-    return `${this.baseUrl}/rules/${params.ruleId}`;
+    return `${this.baseUrl}/suppressionRules/${params.ruleId}`;
   }
 
   public getRuleListUrl(params: { urlParams?: ParamsToGetSuppressionRuleListUrl }): string {
-    return `${this.baseUrl}/rules${this.formQueryString({ ...params.urlParams })}`;
+    return `${this.baseUrl}/suppressionRules${this.formQueryString({ ...params.urlParams })}`;
   }
 
   public createRuleUrl(): string {
-    return `${this.baseUrl}/rules`;
+    return `${this.baseUrl}/suppressionRules`;
   }
 
   public updateRuleUrl(params: { ruleId: string }): string {
-    return `${this.baseUrl}/rules/${params.ruleId}`;
+    return `${this.baseUrl}/suppressionRules/${params.ruleId}`;
   }
 
   public deleteRuleUrl(params: { ruleId: string }): string {
-    return `${this.baseUrl}/rules/${params.ruleId}`;
+    return `${this.baseUrl}/suppressionRules/${params.ruleId}`;
   }
 
   public getTemplateListUrl(params: { urlParams?: ParamsToGetTemplateListUrl }): string {
-    return `${this.baseUrl}/ruleTemplates${this.formQueryString({ ...params.urlParams })}`;
+    return `${this.baseUrl}/suppressionRuleTemplates${this.formQueryString({ ...params.urlParams })}`;
   }
 
   public getSingleTestUrl(params: { testId: string } ): string {
@@ -79,16 +80,32 @@ export class ClashDetectionApiUrlFormatter {
     return `${this.baseUrl}/results/${params.resultId}`;
   }
 
+  public getSchemaInfoUrl(params: { iModelId: string, urlParams?: ParamsToGetSchemaInfoUrl }): string {
+    return `${this.baseUrl}/schema/imodels/${params.iModelId}${this.formQueryString({ ...params.urlParams })}`;
+  }
+
+  public extractSchemaInfoUrl(params: { iModelId: string }): string {
+    return `${this.baseUrl}/schema/imodels/${params.iModelId}}`;
+  }
+
+  public getModelsAndCategoriesUrl(params: { iModelId: string, urlParams?: ParamsToGetModelsAndCategoriesUrl }): string {
+    return `${this.baseUrl}/modelsAndCategories/imodels/${params.iModelId}${this.formQueryString({ ...params.urlParams })}`;
+  }
+
+  public extractModelsAndCategoriesUrl(params: { iModelId: string }): string {
+    return `${this.baseUrl}/modelsAndCategories/imodels/${params.iModelId}}`;
+  }
+
   protected formQueryString(urlParameters: Dictionary<UrlParameterValue> | undefined): string {
     let queryString = "";
     for (const urlParameterKey in urlParameters) {
-      if (!Object.prototype.hasOwnProperty.call(urlParameters, urlParameterKey))
+      if (!Object.prototype.hasOwnProperty.call(urlParameters, urlParameterKey)) {
         continue;
-
+      }
       const urlParameterValue = urlParameters[urlParameterKey];
-      if (!this.shouldAppendToUrl(urlParameterValue))
+      if (!this.shouldAppendToUrl(urlParameterValue)) {
         continue;
-
+      }
       queryString = this.appendToQueryString(queryString, urlParameterKey, urlParameterValue);
     }
 
@@ -96,12 +113,12 @@ export class ClashDetectionApiUrlFormatter {
   }
 
   private shouldAppendToUrl(urlParameterValue: UrlParameterValue): boolean {
-    if (urlParameterValue === null || urlParameterValue === undefined)
+    if (urlParameterValue === null || urlParameterValue === undefined) {
       return false;
-
-    if (typeof urlParameterValue === "string" && !urlParameterValue.trim())
+    }
+    if (typeof urlParameterValue === "string" && !urlParameterValue.trim()) {
       return false;
-
+    }
     return true;
   }
 

@@ -2,7 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import type { AuthorizationParam, CollectionRequestParams } from "../../base/interfaces/CommonInterfaces";
+import type { AdvancedSettings, AuthorizationParam, CollectionRequestParams, ElementSetCriteria } from "../../base/interfaces/CommonInterfaces";
 
 /** Url parameters supported in Test list query. */
 export interface ParamsToGetTestListUrl extends CollectionRequestParams {
@@ -14,12 +14,16 @@ export interface ParamsToGetTestListUrl extends CollectionRequestParams {
 export interface ParamsToGetTestList extends AuthorizationParam {
   /** Parameters that will be appended to the entity list request url that will narrow down the results. */
   urlParams?: ParamsToGetTestListUrl;
+  /** Flag to get user metadata. */
+  userMetadata?: boolean;
 }
 
 /** Parameters for get single Test operation. */
 export interface ParamsToGetTest extends AuthorizationParam {
   /** Test id. */
   testId: string;
+  /** Flag to get user metadata. */
+  userMetadata?: boolean;
 }
 
 /** Parameters for delete Test operation. */
@@ -45,15 +49,8 @@ export interface ParamsToCreateTest extends AuthorizationParam {
   includeSubModels: boolean;
   /** Array of suppression rule ids to associate with test. */
   suppressionRules: string[];
-}
-
-/** Parameters for update Test operation. */
-export interface ElementSetCriteria {
-  modelIds: string[];
-  categoryIds: string[];
-  query?: string;
-  selfCheck: boolean;
-  clearance: number;
+  /** Advanced settings for test. */
+  advancedSettings?: AdvancedSettings;
 }
 
 /** Parameters for update Test operation. */
@@ -74,6 +71,8 @@ export interface ParamsToUpdateTest extends ParamsToGetTest {
   includeSubModels: boolean;
   /** Array of suppression rule ids to associate with test. */
   suppressionRules: string[];
+  /** Advanced settings for test. */
+  advancedSettings?: AdvancedSettings;
 }
 
 /** Parameters for Run Test operation. */
@@ -84,4 +83,11 @@ export interface ParamsToRunTest extends AuthorizationParam {
   iModelId: string;
   /** Named version id. */
   namedVersionId?: string;
+  /** Test settings. */
+  testSettings?: TestSettings;
+}
+
+export interface TestSettings {
+  /** Results limit. */
+  resultsLimit: string;
 }

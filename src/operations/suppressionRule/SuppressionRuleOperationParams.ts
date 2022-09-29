@@ -14,12 +14,16 @@ export interface ParamsToGetSuppressionRuleListUrl extends CollectionRequestPara
 export interface ParamsToGetSuppressionRuleList extends AuthorizationParam {
   /** Parameters that will be appended to the entity list request url that will narrow down the results. */
   urlParams?: ParamsToGetSuppressionRuleListUrl;
+  /** Flag to get user metadata. */
+  userMetadata?: boolean;
 }
 
 /** Parameters for get single Suppression Rule operation. */
 export interface ParamsToGetSuppressionRule extends AuthorizationParam {
   /** Suppression Rule id. */
   ruleId: string;
+  /** Flag to get user metadata. */
+  userMetadata?: boolean;
 }
 
 /** Parameters for delete single Suppression Rule operation. */

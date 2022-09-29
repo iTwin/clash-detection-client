@@ -7,6 +7,7 @@ import type { RecursiveRequired } from "./base/interfaces/UtilityTypes";
 import { AxiosRestClient } from "./base/rest/AxiosRestClient";
 import type { RestClient } from "./base/rest/RestClient";
 import { Constants } from "./Constants";
+import { IModelOperations } from "./operations/imodel/IModelOperations";
 import { SuppressionRuleOperations } from "./operations/suppressionRule/SuppressionRuleOperations";
 import { RunOperations } from "./operations/run/RunOperations";
 import { ResultOperations } from "./operations/result/ResultOperations";
@@ -81,6 +82,11 @@ export class ClashDetectionClient {
   /** Result operations. See {@link ResultOperations}. */
   public get results(): ResultOperations<OperationOptions> {
     return new ResultOperations(this._operationsOptions);
+  }
+
+  /** IModel operations. See {@link IModelOperations}. */
+  public get imodel(): IModelOperations<OperationOptions> {
+    return new IModelOperations(this._operationsOptions);
   }
 
   /**
