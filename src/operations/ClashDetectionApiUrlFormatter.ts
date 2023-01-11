@@ -81,11 +81,11 @@ export class ClashDetectionApiUrlFormatter {
   }
 
   public getSchemaInfoUrl(params: { iModelId: string, urlParams?: ParamsToGetSchemaInfoUrl }): string {
-    return `${this.baseUrl}/schema/imodels/${params.iModelId}${this.formQueryString({ ...params.urlParams })}`;
+    return `${this.baseUrl}/schemas/imodels/${params.iModelId}${this.formQueryString({ ...params.urlParams })}`;
   }
 
   public extractSchemaInfoUrl(params: { iModelId: string }): string {
-    return `${this.baseUrl}/schema/imodels/${params.iModelId}}`;
+    return `${this.baseUrl}/schemas/imodels/${params.iModelId}`;
   }
 
   public getModelsAndCategoriesUrl(params: { iModelId: string, urlParams?: ParamsToGetModelsAndCategoriesUrl }): string {
@@ -93,7 +93,7 @@ export class ClashDetectionApiUrlFormatter {
   }
 
   public extractModelsAndCategoriesUrl(params: { iModelId: string }): string {
-    return `${this.baseUrl}/modelsAndCategories/imodels/${params.iModelId}}`;
+    return `${this.baseUrl}/modelsAndCategories/imodels/${params.iModelId}`;
   }
 
   protected formQueryString(urlParameters: Dictionary<UrlParameterValue> | undefined): string {

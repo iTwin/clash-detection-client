@@ -51,17 +51,12 @@ export interface Schema {
   entityClass: EntityClass[];
 }
 
-/** Extracted schema info. */
-export interface SchemaInfo {
+/** Get Schema Info API response. */
+export interface ResponseFromGetSchemaInfo {
   /** The status of the schema info extraction. One of 'available', 'unavailable'. */
   status: string;
   /* Array of schemas in iModel */
   schema: Schema[];
-}
-
-/** Get Schema Info API response. */
-export interface ResponseFromGetSchemaInfo {
-  schemaInfo: SchemaInfo;
 }
 
 /** Model. */
@@ -80,17 +75,12 @@ export interface Category {
   displayName: string;
 }
 
-/** Extracted models and categories. */
-export interface ModelsAndCategories {
+/** Get Models and Categories API response. */
+export interface ResponseFromGetModelsAndCategories {
   /** The status of the models and categories extraction. One of 'available', 'unavailable'. */
   status: string;
   /* Array of models in iModel */
   models: Model[];
   /* Array of categories in iModel */
   categories: Category[];
-}
-
-/** Get Models and Categories API response. */
-export interface ResponseFromGetModelsAndCategories {
-  modelsAndCategories: ModelsAndCategories;
 }
