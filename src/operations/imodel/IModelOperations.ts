@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 import { OperationUtils } from "../OperationUtils";
 import { OperationsBase } from "../../base/OperationsBase";
-import type { ModelsAndCategories, ResponseFromGetModelsAndCategories, ResponseFromGetSchemaInfo, SchemaInfo } from "../../base/interfaces/apiEntities/IModelInterfaces";
+import type { ResponseFromGetModelsAndCategories, ResponseFromGetSchemaInfo } from "../../base/interfaces/apiEntities/IModelInterfaces";
 import type { OperationOptions } from "../OperationOptions";
 import type { ParamsToExtractModelsAndCategories, ParamsToExtractSchemaInfo, ParamsToGetModelsAndCategories, ParamsToGetSchemaInfo } from "./IModelOperationParams";
 
@@ -20,9 +20,9 @@ export class IModelOperations<TOptions extends OperationOptions> extends Operati
    * Wraps the {@link https://developer.bentley.com/apis/clash-detection/operations/get-schema-info/
    * Get schema info} operation from Clash Detection API.
    * @param {ParamsToGetSchemaInfo} params parameters for this operation. See {@link ParamsToGetSchemaInfo}.
-   * @returns {Promise<SchemaInfo>} schema info for specified iModel and project id. See {@link SchemaInfo}.
+   * @returns {Promise<ResponseFromGetSchemaInfo>} schema info for specified iModel and project id. See {@link ResponseFromGetSchemaInfo}.
    */
-  public async getSchemaInfo(params: ParamsToGetSchemaInfo): Promise<SchemaInfo> {
+  public async getSchemaInfo(params: ParamsToGetSchemaInfo): Promise<ResponseFromGetSchemaInfo> {
     const { accessToken, iModelId } = params;
     OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     const response = await this.sendGetRequest<ResponseFromGetSchemaInfo>({
@@ -30,11 +30,12 @@ export class IModelOperations<TOptions extends OperationOptions> extends Operati
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSchemaInfoUrl({ iModelId, urlParams: params.urlParams }),
     });
-    return response.schemaInfo;
+    return response;
   }
 
   /**
-   * Extracts schema info. Wraps the {@link https://developer.bentley.com/apis/clash-detection/operations/extract-schema-info/
+   * Extracts schema info. Required once per iModel before calling getSchemaInfo(). Extraction is only performed if needed.
+   * Wraps the {@link https://developer.bentley.com/apis/clash-detection/operations/extract-schema-info/
    * Extract schema info} operation from Clash Detection API.
    * @param {ParamsToExtractSchemaInfo} params parameters for this operation. See {@link ParamsToExtractSchemaInfo}.
    * @returns {Promise<void>}.
@@ -60,7 +61,7 @@ export class IModelOperations<TOptions extends OperationOptions> extends Operati
    * @param {ParamsToGetModelsAndCategories} params parameters for this operation. See {@link ParamsToGetModelsAndCategories}.
    * @returns {Promise<ModelsAndCategories>} models and categories for specified iModel and project id. See {@link ModelsAndCategories}.
    */
-  public async getModelsAndCategories(params: ParamsToGetModelsAndCategories): Promise<ModelsAndCategories> {
+  public async getModelsAndCategories(params: ParamsToGetModelsAndCategories): Promise<ResponseFromGetModelsAndCategories> {
     const { accessToken, iModelId } = params;
     OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     const response = await this.sendGetRequest<ResponseFromGetModelsAndCategories>({
@@ -68,7 +69,7 @@ export class IModelOperations<TOptions extends OperationOptions> extends Operati
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getModelsAndCategoriesUrl({ iModelId, urlParams: params.urlParams }),
     });
-    return response.modelsAndCategories;
+    return response;
   }
 
   /**
