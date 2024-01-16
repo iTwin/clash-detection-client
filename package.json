@@ -1,6 +1,6 @@
 {
   "name": "@itwin/clash-detection-client",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Clash Detection client for the iTwin platform",
   "main": "lib/cjs/clash-detection-client.js",
   "module": "lib/esm/clash-detection-client.js",
@@ -31,7 +31,7 @@
     "url": "http://www.bentley.com"
   },
   "dependencies": {
-    "@itwin/imodels-client-management": "^1.1.0",
+    "@itwin/imodels-client-management": "^4.2.3",
     "axios": "^0.27.2"
   },
   "devDependencies": {
