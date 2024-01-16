@@ -3,13 +3,13 @@ lockfileVersion: 5.3
 specifiers:
   '@itwin/build-tools': ^3.0.0
   '@itwin/eslint-plugin': ^3.0.0
-  '@itwin/imodels-client-management': ^1.1.0
+  '@itwin/imodels-client-management': ^4.2.3
   axios: ^0.27.2
   eslint: ^7.32.0
   rimraf: ^3.0.2
 
 dependencies:
-  '@itwin/imodels-client-management': 1.1.0
+  '@itwin/imodels-client-management': 4.2.3
   axios: 0.27.2
 
 devDependencies:
@@ -145,8 +145,8 @@ packages:
       - supports-color
     dev: true
 
-  /@itwin/imodels-client-management/1.1.0:
-    resolution: {integrity: sha512-fj60aj4FHUGm33YrOc4ozvuPc0PzIG46wOMY6q2WjqAPqBR3Q0Vlkx6k3Mk6aHXj1cB9VfxbQUY+yni1Wgx1/A==}
+  /@itwin/imodels-client-management/4.2.3:
+    resolution: {integrity: sha512-1ijl+/OTKQ7qbtKdGXgqmDs+lg30Grp+YQx4RAJxWsg03L9K1vAqp/fBh3DnVFz9kOsBv0ZI1KRGsWcjfEkUPg==}
     dependencies:
       axios: 0.21.4
     transitivePeerDependencies:

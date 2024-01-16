@@ -21,6 +21,7 @@ export class IModelOperations<TOptions extends OperationOptions> extends Operati
    * Get schema info} operation from Clash Detection API.
    * @param {ParamsToGetSchemaInfo} params parameters for this operation. See {@link ParamsToGetSchemaInfo}.
    * @returns {Promise<ResponseFromGetSchemaInfo>} schema info for specified iModel and project id. See {@link ResponseFromGetSchemaInfo}.
+   * @deprecated The method should not be used
    */
   public async getSchemaInfo(params: ParamsToGetSchemaInfo): Promise<ResponseFromGetSchemaInfo> {
     const { accessToken, iModelId } = params;
@@ -39,6 +40,7 @@ export class IModelOperations<TOptions extends OperationOptions> extends Operati
    * Extract schema info} operation from Clash Detection API.
    * @param {ParamsToExtractSchemaInfo} params parameters for this operation. See {@link ParamsToExtractSchemaInfo}.
    * @returns {Promise<void>}.
+   * @deprecated The method should not be used
    */
   public async extractSchemaInfo(params: ParamsToExtractSchemaInfo): Promise<void> {
     const { accessToken, iModelId, projectId } = params;
@@ -60,6 +62,7 @@ export class IModelOperations<TOptions extends OperationOptions> extends Operati
    * Get models and categories} operation from Clash Detection API.
    * @param {ParamsToGetModelsAndCategories} params parameters for this operation. See {@link ParamsToGetModelsAndCategories}.
    * @returns {Promise<ModelsAndCategories>} models and categories for specified iModel and project id. See {@link ModelsAndCategories}.
+   * @deprecated The method should not be used
    */
   public async getModelsAndCategories(params: ParamsToGetModelsAndCategories): Promise<ResponseFromGetModelsAndCategories> {
     const { accessToken, iModelId } = params;
@@ -77,6 +80,7 @@ export class IModelOperations<TOptions extends OperationOptions> extends Operati
    * Extract models and categories} operation from Clash Detection API.
    * @param {ParamsToExtractModelsAndCategories} params parameters for this operation. See {@link ParamsToExtractModelsAndCategories}.
    * @returns {Promise<void>}.
+   * @deprecated The method should not be used
    */
   public async extractModelsAndCategories(params: ParamsToExtractModelsAndCategories): Promise<void> {
     const { accessToken, iModelId, projectId } = params;
