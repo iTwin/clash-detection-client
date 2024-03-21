@@ -267,7 +267,12 @@ async function createClashDetectionTest(accessToken: string, projectId: string, 
 ```typescript
 import { ClashDetectionClient, ParamsToUpdateTest, Test } from "@itwin/clash-detection-client";
 
-/** Function that updates a new clash detection test and prints its id to the console. */
+/** Function that updates a new clash detection test and prints its id to the console.
+ * 
+ * It is mandatory to provide either of modelIds/categoryIds/both or query along with queryName or queries for a specific set.
+ * Cross combination is allowed i.e. setA can have modelId/categoryId and setB can have queries.
+ * queryName supports max of 1024 characters.
+*/
 async function updateClashDetectionTest(accessToken: string, testId: string, rules: string[]): Promise<void> {
   const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
   const suppressionRules: string[] = [clashDetectionClient.ruleId];
