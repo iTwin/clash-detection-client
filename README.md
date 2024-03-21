@@ -55,7 +55,7 @@ The __@itwin/clash-detection-client__ package consists of thin wrapper functions
     - [Extract models and categories - Deprecated](#extract-models-and-categories---deprecated)
     - [Get models and categories - Deprecated](#get-models-and-categories---deprecated)
     - [Extract schema information - Deprecated](#extract-schema-information---deprecated)
-    - [Get schema informationv - Deprecated](#get-schema-informationv---deprecated)
+    - [Get schema information - Deprecated](#get-schema-information---deprecated)
 
 ## Authorization options
 
@@ -268,7 +268,7 @@ async function createClashDetectionTest(accessToken: string, projectId: string, 
 import { ClashDetectionClient, ParamsToUpdateTest, Test } from "@itwin/clash-detection-client";
 
 /** Function that updates a new clash detection test and prints its id to the console.
- * 
+ *
  * It is mandatory to provide either of modelIds/categoryIds/both or query along with queryName or queries for a specific set.
  * Cross combination is allowed i.e. setA can have modelId/categoryId and setB can have queries.
  * queryName supports max of 1024 characters.
@@ -520,7 +520,7 @@ async function extractSchemaInfo(accessToken: string, projectId: string, iModelI
   await clashDetectionClient.imodel.extractSchemaInfo(params);
 }
 ```
-### Get schema informationv - Deprecated
+### Get schema information - Deprecated
 ```typescript
 import { ClashDetectionClient, ParamsToGetSchemaInfo, ResponseFromGetSchemaInfo } from "@itwin/clash-detection-client";
 /** Function that gets the iModel schema information and prints the extraction status and count of schemas. */
