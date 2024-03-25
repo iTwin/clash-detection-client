@@ -28,29 +28,34 @@ The __@itwin/clash-detection-client__ package consists of thin wrapper functions
 - [TestItem](./src/base/interfaces/apiEntities/TestInterfaces.ts#L24)
 
 ## Key methods
-- [`client.imodel.extractModelsAndCategories(params: ParamsToExtractModelsAndCategories): Promise<void>`](#extract-models-and-categories)
-- [`client.imodel.getModelsAndCategories(params: ParamsToGetModelsAndCategories): Promise<ResponseFromGetModelsAndCategories>`](#get-models-and-categories)
-- [`client.imodel.extractSchemaInfo(params: ParamsToExtractSchemaInfo): Promise<void>`](#extract-schema-information)
-- [`client.imodel.getSchemaInfo(params: ParamsToGetSchemaInfo): Promise<ResponseFromGetSchemaInfo>`]
-(#get-schema-information)
-- [`client.templates.getList(params: ParamsToGetTemplateList): EntityListIterator<RuleTemplate>`](#get-all-clash-detection-suppression-rule-templates)
-- [`client.rules.create(params: ParamsToCreateRule): Promise<SuppressionRule>`](#create-clash-detection-suppression-rule)
-- [`client.rules.update(params: ParamsToUpdateRule): Promise<SuppressionRule>`](#update-clash-detection-suppression-rule)
-- [`client.rules.getMinimalList(params: ParamsToGetSuppressionRuleList): EntityListIterator<MinimalSuppressionRule>`](#get-all-clash-detection-suppression-rules--minimal)
-- [`client.rules.getRepresentationList(params: ParamsToGetSuppressionRuleList): EntityListIterator<RuleDetails>`](#get-all-clash-detection-suppression-rules--detailed)
-- [`client.rules.getSingle(params: ParamsToGetSuppressionRule): Promise<RuleDetails>`](#get-clash-detection-suppression-rule)
-- [`client.tests.create(params: ParamsToCreateTest): Promise<Test>`](#create-clash-detection-test)
-- [`client.tests.update(params: ParamsToUpdateTest): Promise<Test>`](#update-clash-detection-test)
-- [`client.tests.getSingle(params: ParamsToGetTest): Promise<TestDetails>`](#get-clash-detection-test)
-- [`client.tests.getList(params: ParamsToGetTestList): EntityListIterator<TestItem>`](#get-all-clash-detection-tests)
-- [`client.tests.runTest(params: ParamsToRunTest): Promise<Run | undefined>`](#run-clash-detection-test)
-- [`client.runs.getMinimalList(params: ParamsToGetRunList): Promise<MinimalRun[]>`](#get-all-clash-detection-runs--minimal)
-- [`client.runs.getRepresentationList(params: ParamsToGetRunList): Promise<RunDetails[]>`](#get-all-clash-detection-runs--detailed)
-- [`client.runs.getSingle(params: ParamsToGetRun): Promise<RunDetails>`](#get-clash-detection-run)
-- [`client.results.get(params: ParamsToGetResult): Promise<ResponseFromGetResult>`](#get-clash-detection-result)
-- [`client.rules.delete(params: ParamsToDeleteSuppressionRule): Promise<void>`](#delete-clash-detection-suppression-rule)
-- [`client.tests.delete(params: ParamsToDeleteTest): Promise<void>`](#delete-clash-detection-test)
-- [`client.runs.delete(params: ParamsToDeleteRun): Promise<void>`](#delete-clash-detection-run)
+- [Clash Detection Client Library](#clash-detection-client-library)
+  - [About this Repository](#about-this-repository)
+  - [Key response types](#key-response-types)
+  - [Key methods](#key-methods)
+  - [Authorization options](#authorization-options)
+  - [Usage examples](#usage-examples)
+    - [Get all clash detection suppression rule templates](#get-all-clash-detection-suppression-rule-templates)
+    - [Create clash detection suppression rule](#create-clash-detection-suppression-rule)
+    - [Update clash detection suppression rule](#update-clash-detection-suppression-rule)
+    - [Get all clash detection suppression rules -minimal](#get-all-clash-detection-suppression-rules--minimal)
+    - [Get all clash detection suppression rules -detailed](#get-all-clash-detection-suppression-rules--detailed)
+    - [Get clash detection suppression rule](#get-clash-detection-suppression-rule)
+    - [Delete clash detection suppression rule](#delete-clash-detection-suppression-rule)
+    - [Create clash detection test](#create-clash-detection-test)
+    - [Update clash detection test](#update-clash-detection-test)
+    - [Get all clash detection tests](#get-all-clash-detection-tests)
+    - [Get clash detection test](#get-clash-detection-test)
+    - [Run clash detection test](#run-clash-detection-test)
+    - [Delete clash detection test](#delete-clash-detection-test)
+    - [Get all clash detection runs -minimal](#get-all-clash-detection-runs--minimal)
+    - [Get all clash detection runs -detailed](#get-all-clash-detection-runs--detailed)
+    - [Get clash detection run](#get-clash-detection-run)
+    - [Delete clash detection run](#delete-clash-detection-run)
+    - [Get clash detection result](#get-clash-detection-result)
+    - [Extract models and categories - Deprecated](#extract-models-and-categories---deprecated)
+    - [Get models and categories - Deprecated](#get-models-and-categories---deprecated)
+    - [Extract schema information - Deprecated](#extract-schema-information---deprecated)
+    - [Get schema information - Deprecated](#get-schema-information---deprecated)
 
 ## Authorization options
 
@@ -262,7 +267,12 @@ async function createClashDetectionTest(accessToken: string, projectId: string, 
 ```typescript
 import { ClashDetectionClient, ParamsToUpdateTest, Test } from "@itwin/clash-detection-client";
 
-/** Function that updates a new clash detection test and prints its id to the console. */
+/** Function that updates a new clash detection test and prints its id to the console.
+ *
+ * It is mandatory to provide either of modelIds/categoryIds/both or query along with queryName or queries for a specific set.
+ * Cross combination is allowed i.e. setA can have modelId/categoryId and setB can have queries.
+ * queryName supports max of 1024 characters.
+*/
 async function updateClashDetectionTest(accessToken: string, testId: string, rules: string[]): Promise<void> {
   const clashDetectionClient: ClashDetectionClient = new ClashDetectionClient();
   const suppressionRules: string[] = [clashDetectionClient.ruleId];
@@ -272,7 +282,7 @@ async function updateClashDetectionTest(accessToken: string, testId: string, rul
     displayName: "Test1 - updated",
     description: "Test 1",
     setA: {
-      modelIds: [ "0x21","0x66","0x68","0x6a" ],
+      modelIds: [],
       categoryIds: [],
       query: "SELECT BisCore.Element.ECInstanceId FROM BisCore.Element WHERE BisCore.Element.Model.id=0x6c",
       queryName: "Test1",
@@ -280,7 +290,7 @@ async function updateClashDetectionTest(accessToken: string, testId: string, rul
       clearance: 0.001,
     },
     setB: {
-      modelIds: [],
+      modelIds: [ "0x21","0x66","0x68","0x6a" ],
       categoryIds: [],
       selfCheck: false,
       clearance: 0,
@@ -460,7 +470,7 @@ async function getClashDetectionResult(accessToken: string, resultId: string): P
 }
 ```
 
-### Extract models and categories
+### Extract models and categories - Deprecated
 ```typescript
 import { ClashDetectionClient, ParamsToExtractModelsAndCategories } from "@itwin/clash-detection-client";
 /** Function that extracts models and categories. */
@@ -477,7 +487,7 @@ async function extractModelsAndCategories(accessToken: string, projectId: string
 }
 ```
 
-### Get models and categories
+### Get models and categories - Deprecated
 ```typescript
 import { ClashDetectionClient, ParamsToGetModelsAndCategories, ResponseFromGetModelsAndCategories } from "@itwin/clash-detection-client";
 /** Function that gets the list of models and categories in an iModel and prints the extraction status and count of models and categories. */
@@ -494,7 +504,7 @@ async function getModelsAndCategories(accessToken: string, projectId: string, iM
 }
 ```
 
-### Extract schema information
+### Extract schema information - Deprecated
 ```typescript
 import { ClashDetectionClient, ParamsToExtractSchemaInfo } from "@itwin/clash-detection-client";
 /** Function that extracts schema info. */
@@ -510,7 +520,7 @@ async function extractSchemaInfo(accessToken: string, projectId: string, iModelI
   await clashDetectionClient.imodel.extractSchemaInfo(params);
 }
 ```
-### Get schema information
+### Get schema information - Deprecated
 ```typescript
 import { ClashDetectionClient, ParamsToGetSchemaInfo, ResponseFromGetSchemaInfo } from "@itwin/clash-detection-client";
 /** Function that gets the iModel schema information and prints the extraction status and count of schemas. */

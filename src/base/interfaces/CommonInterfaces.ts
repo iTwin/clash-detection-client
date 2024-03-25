@@ -147,8 +147,8 @@ export interface PropertyKey {
 
 /** Element set criteria. */
 export interface ElementSetCriteria {
-  modelIds: string[];
-  categoryIds: string[];
+  modelIds?: string[];
+  categoryIds?: string[];
   query?: string;
   queryName?: string;
   selfCheck: boolean;
